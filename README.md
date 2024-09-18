@@ -17,6 +17,9 @@ To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produ
 4. Preprocessed bam files from step 1 were analyzed using MACS2 to call peaks with -f BAM --nomodel parameters. Peaks were then filtered with blacklist region annotation using bedtools (version 2.31.1). Motif analysis was performed using MEME Simple Enrichment Analysis (SEA) with HOmo sapiens COmprehensive MOdel COllection (HOCOMOCO) v11 core motif set to identify binding sites in peaks.
 5. Target peaks were resized to 200 bp (up/downstream 100bp from the motif center) and overlaid with C-to-T and G-to-A variants identified in step 3. When multiple motif positions were found, a position with the highest score was chosen. Background peaks were resized to 200 bp by taking +/- 100bp from the peak summit. 
 
+
+![plot](./main/figs/analytic_pipeline.png)
+
 **Evaluation of D&D signal**
 
 To compare DnD edit counts between target and background peaks, normalized edit counts and signal-to-noise ratio (SNR) were calculated. 
@@ -24,8 +27,7 @@ To compare DnD edit counts between target and background peaks, normalized edit 
 First, SNVs counted in target and background peak groups were normalized by the total number of peaks and peak size and multiplied by a scaling factor of 100 to calculate the number of edits per 100 bp per peak. SNR was then calculated by dividing the DnD edit counts by the mean of non-DnD edit counts. 
 Footprint analysis for DnD edits was performed by counting the number of DnD edits in each position from randomly sampled 200 target and background peaks. The random sampling was repeated for 10 times and mean and standard deviation were used for visualization.
 
-
-![plot](./main/figs/analytic_pipeline.png)
+![plot](./main/figs/DnD_signal.png)
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
 
