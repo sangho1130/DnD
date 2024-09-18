@@ -1,4 +1,4 @@
-**D&Dseq: Docking and Deamination followed by sequencing** 
+# **D&Dseq: Docking and Deamination followed by sequencing** 
 
 (https://www.landaulab.org)
 
@@ -7,9 +7,9 @@
 Abstract: blah blah blah~
 
 
-## [Computational pipeline for D&D analysis]
+## Computational pipeline for D&D analysis
 
-**Extraction of D&D signal**
+### Extraction of D&D signal
 
 To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produced by CellRanger was split into each cell type based on barcode sequence and cell annotation using sinto. For bulk ATAC-seq data, bam files aligned to the genome using BWA-MEM2 were analyzed. After splitting bam files, the following six steps were performed to analyze DnD-mediated genomic variants. 
 
@@ -22,7 +22,7 @@ To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produ
 
 ![plot](./main/figs/analytic_pipeline.png)
 
-**Evaluation of D&D signal**
+### Evaluation of D&D signal
 
 To compare DnD edit counts between target and background peaks, normalized edit counts and signal-to-noise ratio (SNR) were calculated. 
 
