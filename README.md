@@ -7,7 +7,7 @@ Abstract: blah blah blah~
 
 Computational pipeline for D&D analysis
 
-*Extraction of D&D signal
+**Extraction of D&D signal**
 
 To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produced by CellRanger was split into each cell type based on barcode sequence and cell annotation using sinto. For bulk ATAC-seq data, bam files aligned to the genome using BWA-MEM2 were analyzed. After splitting bam files, the following six steps were performed to analyze DnD-mediated genomic variants. 
 
@@ -17,7 +17,7 @@ To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produ
 4. Preprocessed bam files from step 1 were analyzed using MACS2 to call peaks with -f BAM --nomodel parameters. Peaks were then filtered with blacklist region annotation using bedtools (version 2.31.1). Motif analysis was performed using MEME Simple Enrichment Analysis (SEA) with HOmo sapiens COmprehensive MOdel COllection (HOCOMOCO) v11 core motif set to identify binding sites in peaks.
 5. Target peaks were resized to 200 bp (up/downstream 100bp from the motif center) and overlaid with C-to-T and G-to-A variants identified in step 3. When multiple motif positions were found, a position with the highest score was chosen. Background peaks were resized to 200 bp by taking +/- 100bp from the peak summit. 
 
-*Evaluation of D&D signal
+**Evaluation of D&D signal**
 
 To compare DnD edit counts between target and background peaks, normalized edit counts and signal-to-noise ratio (SNR) were calculated. 
 
