@@ -1,6 +1,6 @@
 **D&Dseq: Docking and Deamination followed by sequencing** (https://www.landaulab.org)
 
-![plot](./main/figs/DnD_workflow.jpg)
+![plot](./main/figs/DnD_workflow.png)
 
 Abstract: blah blah blah~
 
