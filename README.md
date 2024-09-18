@@ -6,7 +6,7 @@ Abstract: blah blah blah~
 
 
 Computational pipeline extracting D&D edits blah blah~
-![plot](./main/figs/analytic_pipeline.jpg)
+![plot](./main/figs/analytic_pipeline.png)
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
 
