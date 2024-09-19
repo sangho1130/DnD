@@ -184,6 +184,8 @@ optional arguments:
 ./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
+
+
 **Step. 3: Motif annotation and D&D edit evaluation**
 
 ```
@@ -207,8 +209,34 @@ optional arguments:
                         [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
 ```
 
-```
+This step will add <merged> directory with joint peak calling results in <step5_peaks>, and intersected peaks in each sample's directory. Original MACS2 files will be stored in <celltype_specific> directory in each sample.
 
+```
+└── step5_peaks
+    ├── ca46_ctcf
+    │   ├── celltype_specific
+    │   │   ├── peaks_bkflt.narrowPeak
+    │   │   └── summits_bkflt.bed
+    │   ├── peaks_bkflt.narrowPeak
+    │   └── summits_bkflt.bed
+    ├── k562_gata1
+    │   ├── celltype_specific
+    │   │   ├── peaks_bkflt.narrowPeak
+    │   │   └── summits_bkflt.bed
+    │   ├── peaks_bkflt.narrowPeak
+    │   └── summits_bkflt.bed
+    └── merged
+        ├── meme_sea
+        │   ├── sea.html
+        │   ├── sea.tsv
+        │   ├── sequences.tsv
+        │   └── sites.tsv
+        ├── peaks_bkflt.fasta
+        ├── peaks_bkflt.narrowPeak
+        ├── summits_bkflt.bed
+        └── unfiltered
+            ├── peaks_bkflt.narrowPeak
+            └── summits_bkflt.bed
 ```
 
 
