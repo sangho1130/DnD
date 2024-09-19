@@ -184,31 +184,6 @@ optional arguments:
 ./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
-
-
-**Step. 3: Motif annotation and D&D edit evaluation**
-
-```
-$ ./dnd_pt3.py -h
-
-usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -d DIR, --Dir DIR     directory path
-  -o OUTPUT, --Output OUTPUT
-                        [Global] (*optional) output directory path
-  --size SIZE           [Global] (*optional) test peak width size; default is 200
-  --sample SAMPLE       [Global] "sample name" or "all" for all samples in <step5>
-  --var VARIANTS        [Global] (*optional) expected D&D variants; default is "C>T,G>A"
-  --mode [{chip,homer2,sea}]
-                        [Global] which mode: "chip", "homer2" or "sea"
-  --chipseq CHIPSEQ     [Step 6, --mode:chip] chip-seq reference
-  --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference"
-  --motif MOTIF [MOTIF ...]
-                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
-```
-
 This step will add <merged> directory with joint peak calling results in <step5_peaks>, and intersected peaks in each sample's directory. Original MACS2 files will be stored in <celltype_specific> directory in each sample.
 
 ```
@@ -238,6 +213,30 @@ This step will add <merged> directory with joint peak calling results in <step5_
             ├── peaks_bkflt.narrowPeak
             └── summits_bkflt.bed
 ```
+
+**Step. 3: Motif annotation and D&D edit evaluation**
+
+```
+$ ./dnd_pt3.py -h
+
+usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIR, --Dir DIR     directory path
+  -o OUTPUT, --Output OUTPUT
+                        [Global] (*optional) output directory path
+  --size SIZE           [Global] (*optional) test peak width size; default is 200
+  --sample SAMPLE       [Global] "sample name" or "all" for all samples in <step5>
+  --var VARIANTS        [Global] (*optional) expected D&D variants; default is "C>T,G>A"
+  --mode [{chip,homer2,sea}]
+                        [Global] which mode: "chip", "homer2" or "sea"
+  --chipseq CHIPSEQ     [Step 6, --mode:chip] chip-seq reference
+  --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference"
+  --motif MOTIF [MOTIF ...]
+                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
+```
+
 
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
