@@ -48,6 +48,11 @@ Following tools are required to run D&D analysis (more efficient version is comi
 | HOMER    | 4.11.1  |
 | MEME     | 5.5.5   |
 
+| **database** | **note** |
+| -------- | ------- |
+| ENCODE blacklist   | https://doi.org/10.1038/s41598-019-45839-z   |
+| HOCOMOCO motif DB | indluced in MEME package    |
+| gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    | 
 
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
