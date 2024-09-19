@@ -36,22 +36,17 @@ Footprint analysis for DnD edits was performed by counting the number of DnD edi
 
 Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals.
 
-  **tool**    **tested version**
-  
-  picard    3.1.1\n
-  samtools    1.19
-  bcftools    1.19
-  bedtools    2.31.1
-  
-  bedops    2.4.41
-  
-  vcf2bed    2.4.41
-  
-  macs2    2.2.9.1
-  
-  HOMER    4.11.1
-  
-  MEME    5.5.5
+  | **tool** | **tested version** |
+| ------------- | ------------- |
+| picard   | 3.1.1 |
+  | samtools |   1.19|
+  | bcftools |   1.19|
+  | bedtools |   2.31.1|
+  | bedops   | 2.4.41|
+  | vcf2bed  |  2.4.41|
+  | macs2    | 2.2.9.1|
+  | HOMER    | 4.11.1|
+  | MEME     | 5.5.5|
 
 
 
