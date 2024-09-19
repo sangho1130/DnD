@@ -32,7 +32,7 @@ Footprint analysis for DnD edits was performed by counting the number of DnD edi
 ![plot](./main/figs/DnD_signal.png)
 
 
-### Running D&D analytic pipeline
+### Prerequisite for D&D analysis
 
 Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals.
 
@@ -53,6 +53,23 @@ Following tools are required to run D&D analysis (more efficient version is comi
 | ENCODE blacklist   | https://doi.org/10.1038/s41598-019-45839-z   |
 | HOCOMOCO motif DB | included in MEME package    |
 | gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    | 
+
+
+### Running D&D analytic pipeline
+
+D&D signals are collected and evaluated in three-step python scripts. By default, D&D edits will be called motif analysis using MEME Simple Enrichment Analysis (SEA). Users can also run HOMER2 with their own build or ChIP-seq as reference.
+
+**Step. 1**
+
+
+
+**Step. 3**
+
+
+
+**Step. 3**
+
+
 
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
