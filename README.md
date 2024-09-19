@@ -38,7 +38,7 @@ Following tools are required to run D&D analysis (more efficient version is comi
 
   **tool**    **tested version**
   
-  picard    3.1.1
+  picard    3.1.1\n
   samtools    1.19
   bcftools    1.19
   bedtools    2.31.1
