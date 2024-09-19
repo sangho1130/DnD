@@ -114,6 +114,49 @@ optional arguments:
 ./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
 ```
 
+Expected outputs are five directories in <-o>
+```
+├── step1_preprocess
+│   ├── ca46_ctcf
+│   │   ├── ca46.5perc.bam
+│   │   ├── ca46.5perc.bam.bai
+│   │   └── step1_picard_deduplication.txt
+│   └── k562_gata1
+│       ├── k562.10perc.bam
+│       ├── k562.10perc.bam.bai
+│       └── step1_picard_deduplication.txt
+├── step2_mpileup
+│   ├── ca46_ctcf
+│   │   └── ca46.5perc.pileup
+│   └── k562_gata1
+│       └── k562.10perc.pileup
+├── step3_fltvcf
+│   ├── ca46_ctcf
+│   │   └── ca46.5perc.flt.vcf
+│   └── k562_gata1
+│       └── k562.10perc.flt.vcf
+├── step4_snvs
+│   ├── ca46_ctcf
+│   │   ├── ca46.5perc.flt.CT_GA.SNVs.vcf
+│   │   ├── ca46.5perc.flt.SNVs.vcf
+│   │   ├── ca46.5perc.snvs.bam
+│   │   └── ca46.5perc.snvs.bam.bai
+│   └── k562_gata1
+│       ├── k562.10perc.flt.CT_GA.SNVs.vcf
+│       ├── k562.10perc.flt.SNVs.vcf
+│       ├── k562.10perc.snvs.bam
+│       └── k562.10perc.snvs.bam.bai
+└── step5_peaks
+    ├── ca46_ctcf
+    │   ├── peaks_bkflt.narrowPeak
+    │   └── summits_bkflt.bed
+    └── k562_gata1
+        ├── peaks_bkflt.narrowPeak
+        └── summits_bkflt.bed
+
+```
+
+
 **Step. 2: Joint peak calling and motif searching**
 
 ```
