@@ -57,8 +57,9 @@ Following tools are required to run D&D analysis (more efficient version is comi
 **important note**
 Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated by user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/).
 
-$ tree bams
 ```
+$ tree bams
+
 bams
 ├── ca46_ctcf
 │   ├── ca46.5perc.bam
