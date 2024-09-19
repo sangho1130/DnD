@@ -37,16 +37,17 @@ Footprint analysis for DnD edits was performed by counting the number of DnD edi
 Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals.
 
 | **tool** | **tested version** |
-| -------- | ------- |
-| picard   | 3.1.1   |
-| samtools | 1.19    |
-| bcftools | 1.19    | 
-| bedtools | 2.31.1  |
-| bedops   | 2.4.41  | 
-| vcf2bed  | 2.4.41  |
-| macs2    | 2.2.9.1 |
-| HOMER    | 4.11.1  |
-| MEME     | 5.5.5   |
+| -------- | -------- |
+| Pytohn   | 3.3.9.19 |
+| picard   | 3.1.1    |
+| samtools | 1.19     |
+| bcftools | 1.19     | 
+| bedtools | 2.31.1   |
+| bedops   | 2.4.41   | 
+| vcf2bed  | 2.4.41   |
+| macs2    | 2.2.9.1  |
+| HOMER    | 4.11.1   |
+| MEME     | 5.5.5    |
 
 | **database** | **note** |
 | -------- | ------- |
@@ -71,10 +72,43 @@ bams
 
 ### Running D&D analytic pipeline
 
-D&D signals are collected and evaluated in three-step python scripts. By default, D&D edits will be called motif analysis using MEME Simple Enrichment Analysis (SEA). Users can also run HOMER2 with their own build or ChIP-seq as reference.
+D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build or ChIP-seq as reference. 
 
 **Step. 1**
 
+```
+$ ./dnd_pt1.py -h
+
+usage:  [-h] -d DIR [-o OUTPUT] [--thread THREAD] [--start START] [--end END] [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se] [--count COUNT] [--alt ALT] [--fasta FASTA] [--gnomad GNOMAD] [--pass-gnomad]
+        [--custom CUSTOM [CUSTOM ...]] [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIR, --Dir DIR     directory path
+  -o OUTPUT, --Output OUTPUT
+                        [Global] (*optional) output directory path
+  --thread THREAD       [Global] (*optional) number of threads; default is 4
+  --start START         [Global] (*optional) the first directory index
+  --end END             [Global] (*optional) the last directory index
+  --mapq MAPQ           [Step 1] (*optional) threshold for mapping quality; default is 20
+  --chrom               [Step 1] (*optional) do not filter non-chromosome
+  --smt-other OTHER     [Step 1] (*optional) other filter parameters for samtools in "~"
+  --se                  [Step 1] (*optional) input bam is single-end
+  --count COUNT         [Step 2] (*optional) minimum total counts; default is 3
+  --alt ALT             [Step 2] (*optional) minimum ALT counts; default is 2
+  --fasta FASTA         [Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
+  --gnomad GNOMAD       [Step 3] (*optional) path to gnomAD vcf file
+  --pass-gnomad         [Step 3] (*optional) do not run gnomAD filering
+  --custom CUSTOM [CUSTOM ...]
+                        [Step 3] (*optional) custom vcf file(s) to filter, multiple files are accepted
+  --vaf VAF             [Step 3] (*optional) filter mutations frequent than this value; e.g. 10 for 10perc; default is 10
+  --snv SNV             [Step 4] (*optoinal) SNV patterns to search; e.g. --snv "C>T,G>A, G>C"; default is "C>T,G>A"
+  --gsize GSIZE         [Step 5] (*optional) effective genome size for macs2 callpeak; default is hs (homo sapiens)
+  --opt OPT             [Step 5] (*optional) other parameters for macs2 callpeak
+  --blacklist BLACKLIST
+                        [Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed
+  --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
+```
 
 
 **Step. 3**
