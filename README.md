@@ -111,7 +111,7 @@ optional arguments:
 ```
 
 ```
-./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
+$ ./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
 ```
 
 Expected outputs are five directories in <-o>
@@ -181,7 +181,7 @@ optional arguments:
 ```
 
 ```
-./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
+$ ./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
 This step will add a "merged" directory with joint peak calling results in "step5_peaks", and intersected peaks in each sample's directory. Original MACS2 files will be stored in "celltype_specific" directory in each sample.
@@ -237,6 +237,10 @@ optional arguments:
                         [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
 ```
 
+```
+$ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
+$ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample k562_gata1 --mode sea --motif GATA1_HUMAN.H11MO.0.A
+```
 
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
