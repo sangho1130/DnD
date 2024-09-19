@@ -184,7 +184,7 @@ optional arguments:
 ./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
-This step will add a "<merged>" directory with joint peak calling results in <step5_peaks>, and intersected peaks in each sample's directory. Original MACS2 files will be stored in <celltype_specific> directory in each sample.
+This step will add a "merged" directory with joint peak calling results in "step5_peaks", and intersected peaks in each sample's directory. Original MACS2 files will be stored in "celltype_specific" directory in each sample.
 
 ```
 └── step5_peaks
