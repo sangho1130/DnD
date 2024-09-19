@@ -110,6 +110,9 @@ optional arguments:
   --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
 ```
 
+```
+./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
+```
 
 **Step. 3**
 
