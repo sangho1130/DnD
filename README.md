@@ -54,6 +54,8 @@ Following tools are required to run D&D analysis (more efficient version is comi
 | HOCOMOCO motif DB | included in MEME package    |
 | gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    | 
 
+Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated by user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/).
+
 
 ### Running D&D analytic pipeline
 
