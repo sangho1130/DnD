@@ -74,7 +74,7 @@ bams
 
 D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build or ChIP-seq as reference. 
 
-**Step. 1**
+**Step. 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
 ```
 $ ./dnd_pt1.py -h
@@ -114,13 +114,59 @@ optional arguments:
 ./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
 ```
 
-**Step. 3**
+**Step. 2: Joint peak calling and motif searching**
 
+```
+$ ./dnd_pt2.py -h
 
+usage: [-h] -d DIR [-o OUTPUT] --mode [{sea,homer2}] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--homer-ref HM2REF]
 
-**Step. 3**
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIR, --Dir DIR     directory path
+  -o OUTPUT, --Output OUTPUT
+                        [Global] (*optional) output directory path
+  --mode [{sea,homer2}]
+                        [Global] which mode: "sea", "homer2"; default is "sea"
+  --gsize GSIZE         [Step 5] (*optional) effective genome size for macs2 callpeak; default is hs
+  --opt OPT             [Step 5] (*optional) other parameters for macs2 callpeak
+  --blacklist BLACKLIST
+                        [Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed
+  --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
+  --motif MOTIF         [Step 5, --mode:sea] (*optional) motif reference; default is <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme>
+  --homer-ref HM2REF    [Step 5, --mode:homer2] (*optional) homer2 reference"
+```
 
+```
+./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
+```
 
+**Step. 3: Motif annotation and D&D edit evaluation**
+
+```
+$ ./dnd_pt3.py -h
+
+usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DIR, --Dir DIR     directory path
+  -o OUTPUT, --Output OUTPUT
+                        [Global] (*optional) output directory path
+  --size SIZE           [Global] (*optional) test peak width size; default is 200
+  --sample SAMPLE       [Global] "sample name" or "all" for all samples in <step5>
+  --var VARIANTS        [Global] (*optional) expected D&D variants; default is "C>T,G>A"
+  --mode [{chip,homer2,sea}]
+                        [Global] which mode: "chip", "homer2" or "sea"
+  --chipseq CHIPSEQ     [Step 6, --mode:chip] chip-seq reference
+  --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference"
+  --motif MOTIF [MOTIF ...]
+                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
+```
+
+```
+
+```
 
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
