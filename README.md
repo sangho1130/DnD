@@ -242,6 +242,44 @@ $ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea -
 $ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample k562_gata1 --mode sea --motif GATA1_HUMAN.H11MO.0.A
 ```
 
+This will generate "step6_tfpeaks_sea" directory with includes "sample" (in this example, k562_gata1).
+
+Each "sample" directory has peaks, D&D edits, and footprint plots for TF binding peaks and background peaks. Users can define window size to collect D&D edits or the number of peaks to sample in footprinting plotting.
+
+```
+step6_tfpeaks_sea/
+└── k562_gata1
+    ├── motif_bkgd.narrowPeak
+    ├── motif_bkgd.narrowPeak.CT_GA.vcf
+    ├── motif_bkgd.narrowPeak.nonDnD.vcf
+    ├── motif_bkgd.narrowPeak.vcf
+    ├── motif_bkgd.narrowPeak.width200
+    ├── motif_bkgd.narrowPeak.width200.CT_GA.vcf
+    ├── motif_bkgd.narrowPeak.width200.nonDnD.vcf
+    ├── motifCenteredCounts
+    ├── motifCenteredCounts_nonDnD
+    ├── motif_TF.narrowPeak
+    ├── motif_TF.narrowPeak.CT_GA.vcf
+    ├── motif_TF.narrowPeak.motifCentered.width200
+    ├── motif_TF.narrowPeak.motifCentered.width200.CT_GA.vcf
+    ├── motif_TF.narrowPeak.motifCentered.width200.nonDnD.vcf
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf
+    ├── motif_TF.narrowPeak.nonDnD.vcf
+    ├── motif_TF.narrowPeak.vcf
+    ├── motif_TF.narrowPeak.width200
+    ├── motif_TF.narrowPeak.width200.CT_GA.vcf
+    ├── motif_TF.narrowPeak.width200.nonDnD.vcf
+    ├── others.countNormalized.txt
+    ├── others.countPerPeak.txt
+    ├── snvs_countNormalized.pdf
+    ├── snvs_countNormalized_SNratio.pdf
+    ├── summitCenteredCounts
+    ├── summitCenteredCounts_nonDnD
+    ├── target.countNormalized.txt
+    └── target.countPerPeak.txt
+```
+
+
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
 
