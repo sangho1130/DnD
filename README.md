@@ -38,10 +38,10 @@ Following tools are required to run D&D analysis (more efficient version is comi
 
 | **tool** | **tested version** |
 | -------- | -------- |
-| Pytohn   | 3.3.9.19 |
+| Python   | 3.9.19   |
 | picard   | 3.1.1    |
 | samtools | 1.19     |
-| bcftools | 1.19     | 
+| bcftools | 1.21     | 
 | bedtools | 2.31.1   |
 | bedops   | 2.4.41   | 
 | vcf2bed  | 2.4.41   |
