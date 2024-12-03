@@ -137,7 +137,7 @@ extend_bed <- function(bedArg, sizeArg, varArg) {
     ref <- unlist(strsplit(var, split = ""))[1]
     alt <- unlist(strsplit(var, split = ""))[2]
     bed_var <- subset(bed, V6 == ref & V7 == alt)
-    write.table(bed_var, gsub(bedArg, pattern = "bed", replacement = paste(c(var, "_+-", sizeArg, "bp.bed"), collapse = "")), quote = F, sep = "\t", row.names = F, col.names = F)
+    write.table(bed_var, gsub(bedArg, pattern = "bed$", replacement = paste(c(var, "_+-", sizeArg, "bp.bed"), collapse = "")), quote = F, sep = "\t", row.names = F, col.names = F)
   }
 }
 
