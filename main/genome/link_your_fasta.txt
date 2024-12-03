@@ -1,0 +1,5 @@
+link your genome fasta and index files here:
+genome/
+├── genome.fa
+├── genome.fa.fai
+└── GRCh38.p14.genome.chrs.bed
