@@ -46,7 +46,7 @@ def main(args):
 
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser('--mode only supports homer2 or sea')
+	parser = argparse.ArgumentParser('')
 	parser.add_argument('-d', '--Dir', help = 'directory path', required = True)
 	parser.add_argument('-o', '--Output', help = '[Global] (*optional) output directory path', required = False)
 
