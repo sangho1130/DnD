@@ -1,0 +1,2 @@
+hg38-blacklist.v2.bed,https://doi.org/10.5281/zenodo.1491733,original
+somatic-hg38-af-only-gnomad.hg38.chrs.vcf.gz,https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/,modified from the raw data
