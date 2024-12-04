@@ -73,9 +73,8 @@ if __name__ == '__main__':
 	parser.add_argument('--opt', help = '[Step 5] (*optional) other parameters for macs2 callpeak', type = str, required = False)
 	parser.add_argument('--blacklist', help = '[Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed', required = False, default = "~/DnD/filter/hg38-blacklist.v2.bed")
 	parser.add_argument('--pass-bklist', dest = 'pass_bklist', help = '[Step 5] (*optional) do not run blacklist filtering', required = False, default = False, action = 'store_true')
-	parser.add_argument('--motif', help = '[Step 5, --mode:sea] (*optional) motif reference; default is <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme>', 
-				default = '/gpfs/commons/home/shyoon/Programs/meme_v5.5.5/databases/motif_databases/HUMAN/HOCOMOCOv11_core_HUMAN_mono_meme_format.meme', required = False)
-	parser.add_argument('--fasta', help = '[Step 5, --mode:sea] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa', default = "~/DnD/genome/genome.fa", required = False)
+	parser.add_argument('--motif', help = '[Step 5, --mode:sea] (*optional) motif reference; e.g. <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme> from the MEME pkg', required = False)
+	parser.add_argument('--fasta', help = '[Step 5, --mode:sea] (*optional) genome fasta (indexed) used in alignment; default searches for "~/DnD/genome/genome.fa"', default = "~/DnD/genome/genome.fa", required = False)
 
 	parser.add_argument('--homer-ref', dest = 'hm2ref', help = '[Step 5, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"', default = 'grch38_crgatac', required = False)
 
