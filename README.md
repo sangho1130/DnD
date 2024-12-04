@@ -46,6 +46,7 @@ MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
 
 Other dependencies and requirements are specified in [main/environment](main/environment).
 
+Core tools required are,
 | **tool** | **tested version** |
 | -------- | -------- |
 | Python   | 3.9.19   |
