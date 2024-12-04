@@ -82,14 +82,14 @@ bams
     └── k562.10perc.bam.bai
 ```
 
-### Running D&D analytic pipeline
+## Running D&D analytic pipeline
 
 D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build or ChIP-seq as reference. 
 
 **Step. 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
 ```
-$ ./dnd_pt1.py -h
+$ python dnd_pt1.py -h
 
 usage:  [-h] -d DIR [-o OUTPUT] [--thread THREAD] [--start START] [--end END] [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se] [--count COUNT] [--alt ALT] [--fasta FASTA] [--gnomad GNOMAD] [--pass-gnomad]
         [--custom CUSTOM [CUSTOM ...]] [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
@@ -123,7 +123,7 @@ optional arguments:
 ```
 
 ```
-$ ./dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
+$ python dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
 ```
 
 Expected outputs are five directories in <-o>
@@ -172,7 +172,7 @@ Expected outputs are five directories in <-o>
 **Step. 2: Joint peak calling and motif searching**
 
 ```
-$ ./dnd_pt2.py -h
+$ python dnd_pt2.py -h
 
 usage: [-h] -d DIR [-o OUTPUT] --mode [{sea,homer2}] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--homer-ref HM2REF]
 
@@ -193,7 +193,7 @@ optional arguments:
 ```
 
 ```
-$ ./dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
+$ python dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
 This step will add a "merged" directory with joint peak calling results in "step5_peaks", and intersected peaks in each sample's directory. Original MACS2 files will be stored in "celltype_specific" directory in each sample.
@@ -229,7 +229,7 @@ This step will add a "merged" directory with joint peak calling results in "step
 **Step. 3: Motif annotation and D&D edit evaluation**
 
 ```
-$ ./dnd_pt3.py -h
+$ python dnd_pt3.py -h
 
 usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
 
@@ -250,8 +250,8 @@ optional arguments:
 ```
 
 ```
-$ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
-$ ./dnd_pt3.py -d <path_to_pt1_output_directory> --sample k562_gata1 --mode sea --motif GATA1_HUMAN.H11MO.0.A
+$ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
+$ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample k562_gata1 --mode sea --motif GATA1_HUMAN.H11MO.0.A
 ```
 
 This will generate "step6_tfpeaks_sea" directory with includes "sample" (in this example, k562_gata1).
