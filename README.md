@@ -86,7 +86,7 @@ bams
 
 D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build or ChIP-seq as reference. 
 
-**Step. 1: preprocessing, collecting and filtering variants, and first round peak calling**
+**Part 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
 ```
 $ python dnd_pt1.py -h
@@ -169,7 +169,9 @@ Expected outputs are five directories in <-o>
 ```
 
 
-**Step. 2: Joint peak calling and motif searching**
+**Part 2: Joint peak calling and motif searching**
+
+We found that having a common set of peaks in different samples is often convenient when comparing D&D edit signals. Part2 jointly calls peaks in all samples found in your <step5_peaks> directory and intersect with individual calls. Old peaks are moved to the <celltype_specific> directory in each sample. Users who do not wish to jointly call peaks can skip this part.
 
 ```
 $ python dnd_pt2.py -h
@@ -226,12 +228,12 @@ This step will add a "merged" directory with joint peak calling results in "step
             └── summits_bkflt.bed
 ```
 
-**Step. 3: Motif annotation and D&D edit evaluation**
+**Part 3: Motif annotation and D&D edit evaluation**
 
 ```
 $ python dnd_pt3.py -h
 
-usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
+usage: [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
 
 optional arguments:
   -h, --help            show this help message and exit
