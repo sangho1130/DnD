@@ -63,7 +63,7 @@ Core tools required are,
 | **database** | **note** |
 | -------- | ------- |
 | ENCODE blacklist   | https://doi.org/10.1038/s41598-019-45839-z   |
-| HOCOMOCO motif DB | included in MEME package    |
+| HOCOMOCO motif DB | included in MEME package https://meme-suite.org/meme/doc/download.html   |
 | gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    |
 |                    | filtered version used in the paper is available at https://doi.org/10.6084/m9.figshare.27956862 |
 
