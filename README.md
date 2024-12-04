@@ -24,10 +24,10 @@ To summarize genome edits introduced by DnD in scATAC-seq data, a bam file produ
 
 ### Evaluation of D&D signal
 
-To compare DnD edit counts between target and background peaks, normalized edit counts and signal-to-noise ratio (SNR) were calculated. 
+To compare D&D edit counts between target and background regions, edit counts per peak were summarized and signal-to-noise ratio (SNR) were calculated by dividing the number of C-to-T and G-to-A by the number of other variants. First, edits per peak were calculated by dividing SNV counts by the number of peaks in resized target and background peak regions. We assume that the frequencies of non-D&D edit (edits other than C-to-T) are consistent across the target and background regions, so this can be used to normalize the D&D edit counts. In this manner, SNR was then calculated by dividing the D&D edit counts by the mean of non-D&D edit counts. 
 
-First, SNVs counted in target and background peak groups were normalized by the total number of peaks and peak size and multiplied by a scaling factor of 100 to calculate the number of edits per 100 bp per peak. SNR was then calculated by dividing the DnD edit counts by the mean of non-DnD edit counts. 
-Footprint analysis for DnD edits was performed by counting the number of DnD edits in each position from randomly sampled 200 target and background peaks. The random sampling was repeated for 10 times and mean and standard deviation were used for visualization.
+Footprint analysis for D&D edits was performed by counting the number of D&D edits in each base pair from randomly sampled target and background peaks, +-100 bp from the center of the motifs. The random sampling was repeated for 10 times and mean and standard deviation were used for visualization. For both the cell mixing experiment and primary blood cells, we used 200 randomly selected peaks. The number of subsampled peaks can be set by the user. 
+
 
 ![plot](./main/figs/DnD_signal.png)
 
