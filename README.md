@@ -64,7 +64,8 @@ Core tools required are,
 | -------- | ------- |
 | ENCODE blacklist   | https://doi.org/10.1038/s41598-019-45839-z   |
 | HOCOMOCO motif DB | included in MEME package    |
-| gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    | 
+| gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    |
+|                    | filtered version used in the paper is available at ://doi.org/10.6084/m9.figshare.27956862 |
 
 **important note**
 Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated by user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/).
