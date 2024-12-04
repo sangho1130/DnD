@@ -44,7 +44,7 @@ HOMER2 can be downloaded from https://homer-fnirs.org
 
 MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
 
-Other dependencies and requirements are specified in (DnD/main/environment).
+Other dependencies and requirements are specified in [main/environment](main/environment).
 
 | **tool** | **tested version** |
 | -------- | -------- |
