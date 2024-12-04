@@ -34,7 +34,13 @@ Footprint analysis for D&D edits was performed by counting the number of D&D edi
 
 ### Prerequisite for D&D analysis
 
-Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals.
+Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals. 
+
+D&D pipeline was tested on Python 3.9.19 and R 4.3.3 using mamba (https://mamba.readthedocs.io/en/latest/). 
+rtrackpayer (Bioconductor, https://doi.org/doi:10.18129/B9.bioc.rtracklayer), ggplot2, and reshape2 are required.
+HOMER2 can be downloaded from https://homer-fnirs.org
+MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
+Other dependencies and requirements are specified in <DnD/main/environment>.
 
 | **tool** | **tested version** |
 | -------- | -------- |
