@@ -26,7 +26,7 @@ def samtools_flt(smtArg, outputArg, bamArg, threadArg, mapqArg, chromArg, otherA
 		cmd += ' -f 0x2' # read mapped in proper pair
 	cmd += ' -F 256' # leave only primary alignment
 	if not chromArg:
-		cmd += ' -L ' + '~/dnd/genome/GRCh38.p14.genome.chrs.bed'
+		cmd += ' -L ' + '~/DnD/genome/GRCh38.p14.genome.chrs.bed'
 	if otherArg:
 		cmd += ' ' + otherArg
 	cmd += ' ' + outputArg + bamArg

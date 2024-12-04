@@ -115,9 +115,9 @@ if __name__ == '__main__':
 
 	parser.add_argument('--count', help = '[Step 2] (*optional) minimum total counts; default is 3', type = int, default = 3, required = False)
 	parser.add_argument('--alt', help = '[Step 2] (*optional) minimum ALT counts; default is 2', type = int, default = 2, required = False)
-	parser.add_argument('--fasta', help = '[Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa', default = "~/dnd/genome/genome.fa", required = False)
+	parser.add_argument('--fasta', help = '[Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa', default = "~/DnD/genome/genome.fa", required = False)
 
-	parser.add_argument('--gnomad', help = '[Step 3] (*optional) path to gnomAD vcf file', default = "~/dnd/filter/somatic-hg38-af-only-gnomad.hg38.chrs.vcf.gz", required = False)
+	parser.add_argument('--gnomad', help = '[Step 3] (*optional) path to gnomAD vcf file', default = "~/DnD/filter/somatic-hg38-af-only-gnomad.hg38.chrs.vcf.gz", required = False)
 	parser.add_argument('--pass-gnomad', dest = 'pass_germline', help = '[Step 3] (*optional) do not run gnomAD filering', required = False, default = False, action = 'store_true')
 	parser.add_argument('--custom', help = '[Step 3] (*optional) custom vcf file(s) to filter, multiple files are accepted', nargs = "+", required = False)
 	parser.add_argument('--vaf', help = '[Step 3] (*optional) filter mutations frequent than this value; e.g. 10 for 10perc; default is 10', type = int, default = 10, required = False)
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('--gsize', help = '[Step 5] (*optional) effective genome size for macs2 callpeak; default is hs (homo sapiens)', default = 'hs', required = False)
 	parser.add_argument('--opt', help = '[Step 5] (*optional) other parameters for macs2 callpeak', type = str, required = False)
-	parser.add_argument('--blacklist', help = '[Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed', required = False, default = "~/dnd/filter/hg38-blacklist.v2.bed")
+	parser.add_argument('--blacklist', help = '[Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed', required = False, default = "~/DnD/filter/hg38-blacklist.v2.bed")
 	parser.add_argument('--pass-bklist', dest = 'pass_bklist', help = '[Step 5] (*optional) do not run blacklist filtering', required = False, default = False, action = 'store_true')
 
 	args = parser.parse_args()

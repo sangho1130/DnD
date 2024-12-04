@@ -108,7 +108,7 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		outwrite.close()
 
 		cmd_sort = bdtArg + " sort"
-		cmd_sort += " -g " + "~/dnd/genome/GRCh38.p14.genome.chrs.bed"
+		cmd_sort += " -g " + "~/DnD/genome/GRCh38.p14.genome.chrs.bed"
 		cmd_sort += " -i " + outputArg + sampleArg + "/__tmp__motif_TF.offset.bed"
 		cmd_sort += " > " + outputArg + sampleArg + "/motif_TF.offset.bed"
 		print (cmd_sort, "\n")
@@ -117,7 +117,7 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		cmd_rm = remove_temp(outputArg + sampleArg, "__tmp__")
 		subprocess.getoutput(cmd_rm)
 
-		cmd_plt = "Rscript ~/dnd/src/main/tools.R plot_offset"
+		cmd_plt = "Rscript ~/DnD/src/main/tools.R plot_offset"
 		cmd_plt += " " + outputArg + sampleArg + "/motif_TF.offset.bed"
 		subprocess.getoutput(cmd_plt)
 
@@ -143,7 +143,7 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		subprocess.getoutput(cmd_bt_ta_sm)
 		fltRedunPeaks(outputArg + sampleArg + "/motif_TF.summits.bed")
 
-		cmd_resize = "Rscript ~/dnd/src/main/tools.R app_resize"
+		cmd_resize = "Rscript ~/DnD/src/main/tools.R app_resize"
 
 		cmd_resize_np = cmd_resize + " " + outputArg + sampleArg + "/motif_TF.narrowPeak"
 		cmd_resize_np += " " + sizeArg + " np"
@@ -291,7 +291,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 
 	for peakFile in peakFiles:
 		if not ".width" + testSizeArg in peakFile:
-			cmd_resize = "Rscript ~/dnd/src/main/tools.R app_resize"
+			cmd_resize = "Rscript ~/DnD/src/main/tools.R app_resize"
 			cmd_resize += " " + peakFile
 			cmd_resize += " " + testSizeArg
 			cmd_resize += " np"
@@ -334,7 +334,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	motifCenteredCounts(outputArg + sampleArg + peak_target_resized + testSizeArg, outputArg + sampleArg + peak_target_resized + testSizeArg + "." + varSuffix + ".vcf",
 			    outputArg + sampleArg + peak_bkgd_resized + testSizeArg, outputArg + sampleArg + peak_bkgd_resized + testSizeArg  + "." + varSuffix + ".vcf",
 			    outputArg + sampleArg + out_resized + "/res", testSizeArg, peakSampleSizeArg, "DnD", varArgs)
-	cmd_plt = "Rscript ~/dnd/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_resized
+	cmd_plt = "Rscript ~/DnD/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_resized
 	print (cmd_plt)
 	subprocess.getoutput(cmd_plt)
 
@@ -343,7 +343,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	motifCenteredCounts(outputArg + sampleArg + peak_target_resized + testSizeArg, outputArg + sampleArg + peak_target_resized + testSizeArg + ".nonDnD.vcf",
 			    outputArg + sampleArg + peak_bkgd_resized + testSizeArg, outputArg + sampleArg + peak_bkgd_resized + testSizeArg  + ".nonDnD.vcf",
 			    outputArg + sampleArg + out_resized + "_nonDnD/res", testSizeArg, peakSampleSizeArg, "nonDnD", varArgs)
-	cmd_plt = "Rscript ~/dnd/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_resized + "_nonDnD"
+	cmd_plt = "Rscript ~/DnD/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_resized + "_nonDnD"
 	print (cmd_plt)
 	subprocess.getoutput(cmd_plt)
 
@@ -352,7 +352,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	motifCenteredCounts(outputArg + sampleArg + peak_target_centric + testSizeArg, outputArg + sampleArg + peak_target_centric + testSizeArg + "." + varSuffix + ".vcf",
 			    outputArg + sampleArg + peak_bkgd_resized + testSizeArg, outputArg + sampleArg + peak_bkgd_resized + testSizeArg  + "." + varSuffix + ".vcf",
 			    outputArg + sampleArg + out_centric + "/res", testSizeArg, peakSampleSizeArg, "DnD", varArgs)
-	cmd_plt = "Rscript ~/dnd/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_centric
+	cmd_plt = "Rscript ~/DnD/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_centric
 	print (cmd_plt)
 	subprocess.getoutput(cmd_plt)
 
@@ -361,7 +361,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	motifCenteredCounts(outputArg + sampleArg + peak_target_centric + testSizeArg, outputArg + sampleArg + peak_target_centric + testSizeArg + ".nonDnD.vcf",
 			    outputArg + sampleArg + peak_bkgd_resized + testSizeArg, outputArg + sampleArg + peak_bkgd_resized + testSizeArg  + ".nonDnD.vcf",
 			    outputArg + sampleArg + out_centric + "_nonDnD/res", testSizeArg, peakSampleSizeArg, "nonDnD", varArgs)
-	cmd_plt = "Rscript ~/dnd/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_centric + "_nonDnD"
+	cmd_plt = "Rscript ~/DnD/src/main/tools.R plot_footprint " + outputArg + sampleArg + out_centric + "_nonDnD"
 	print (cmd_plt)
 	subprocess.getoutput(cmd_plt)
 
@@ -375,7 +375,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 				outputArg + sampleArg + "/motif_TF.summits.bed.width" + testSizeArg, outputArg + sampleArg + "/target")
 		countOnlySnvs(outputArg + sampleArg + "/motif_bkgd.summits.bed.width" + testSizeArg + ".vcf", 
 				outputArg + sampleArg + "/motif_bkgd.summits.bed.width" + testSizeArg, outputArg + sampleArg + "/background")
-	cmdsnr = "Rscript ~/dnd/src/main/tools.R plot_context"
+	cmdsnr = "Rscript ~/DnD/src/main/tools.R plot_context"
 	cmdsnr += " " + outputArg + sampleArg + "/target.countNormalized.txt"
 	cmdsnr += " " + outputArg + sampleArg + "/background.countNormalized.txt"
 	cmdsnr += " " + outputArg + sampleArg + "/"
@@ -397,7 +397,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	print (cmd_v2b_bkgd)
 	subprocess.getoutput(cmd_v2b_bkgd)
 
-	cmd_ext_bed = "Rscript ~/dnd/src/main/tools.R extend_bed"
+	cmd_ext_bed = "Rscript ~/DnD/src/main/tools.R extend_bed"
 	cmd_ext_bed_tf = cmd_ext_bed + " " + tfVcf + ".bed"
 	cmd_ext_bed_tf += " " + "5" 
 	cmd_ext_bed_tf += " " + varSuffix
@@ -410,7 +410,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	target_fas = list()
 	background_fas = list()
 	for var in varSuffix.split("_"):
-		cmd_bdt = bdtArg + " getfasta -fi ~/dnd/genome/genome.fa"
+		cmd_bdt = bdtArg + " getfasta -fi ~/DnD/genome/genome.fa"
 		cmd_bdt_tf = cmd_bdt + " -fo " + tfVcf + "." + var + "_+-5bp.fasta"
 		cmd_bdt_tf += " -bed " + tfVcf + "." + var + "_+-5bp.bed"
 		print (cmd_bdt_tf)
@@ -440,7 +440,7 @@ def stats_peaks(modeArg, bdtArg, v2bArg, sampleArg, testSizeArg, peakSampleSizeA
 	getNt(target_fas, outputArg + sampleArg + "/context_tri/target_tri.txt", 5, 2, 0)
 	getNt(background_fas, outputArg + sampleArg + "/context_tri/background_tri.txt", 5, 2, 0)
 
-	cmd_plt = "Rscript ~/dnd/src/main/tools.R ntcontext"
+	cmd_plt = "Rscript ~/DnD/src/main/tools.R ntcontext"
 	cmd_plt_tf_di = cmd_plt + " " + outputArg + sampleArg + "/context_di/target_di.txt 2"
 	subprocess.getoutput(cmd_plt_tf_di)
 	cmd_plt_bkgd_di = cmd_plt + " " + outputArg + sampleArg + "/context_di/background_di.txt 2"
