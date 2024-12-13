@@ -258,7 +258,8 @@ options:
   --chipseq CHIPSEQ     [Step 6, --mode:chip] chip-seq reference
   --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"
   --motif MOTIF [MOTIF ...]
-                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea", multiple arguments are supported```
+                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea", multiple arguments are supported
+```
 
 ```
 $ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
