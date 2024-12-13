@@ -198,6 +198,7 @@ options:
   --motif MOTIF         [Step 5, --mode:sea] (*optional) motif reference; default is <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme>
   --fasta FASTA         [Step 5, --mode:sea] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
   --homer-ref HM2REF    [Step 5, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"
+```
 
 ```
 $ python dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
