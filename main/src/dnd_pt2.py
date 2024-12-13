@@ -43,8 +43,10 @@ def main(args):
 		annotate_peaks(bdt, args.Dir, args.Output, mc2dir)
 
 	elif args.passpc:
-		mc2dir = args.Output + "step5_peaks/merged/"
-
+		if args.sample == "joint":
+			mc2dir = args.Output + "step5_peaks/merged/"
+		else:
+			mc2dir = args.Output + "step5_peaks/" + args.sample + "/"
 
 	if not args.pass_bklist:
 		if args.mode == "sea":
@@ -66,6 +68,7 @@ if __name__ == '__main__':
 	parser.add_argument('-o', '--Output', help = '[Global] (*optional) output directory path', required = False)
 
 	parser.add_argument('--pass-peakcall', dest = 'passpc', help = '[Global] (*optional) pass peak calling and perform motif analysis ONLY; default is DO NOT PASS', required = False, default = False, action = 'store_true')
+	parser.add_argument('--sample', help = '[Global] (*optional if <--pass-peakcall>) motif analysis for which sample: "joint" or specify sample name; default is "joint"', default = 'joint', required = False)
 
 	parser.add_argument('--mode', help = '[Global] which mode: "sea", "homer2"; default is "sea"', nargs = '?', choices = ['sea', 'homer2'], default = 'sea', required = True)
 

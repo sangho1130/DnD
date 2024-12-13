@@ -41,7 +41,7 @@ def main(args):
 		samples = [args.sample]
 
 	for sample in samples:
-		tf_peaks(args.mode, bdt, hm2, args.hm2ref, sample, args.motif, args.chipseq, args.size, args.Dir, args.Output)
+		tf_peaks(args.mode, bdt, hm2, args.hm2ref, sample, args.motif, args.chipseq, args.size, args.Dir, args.Output, args.indiv)
 		stats_peaks(args.mode, bdt, v2b, sample, args.size, args.rand, args.Dir, args.Output, args.variants)
 
 
@@ -56,6 +56,7 @@ if __name__ == '__main__':
 	parser.add_argument('--var', dest = 'variants', help = '[Global] (*optional) expected D&D variants; default is "C>T,G>A"', default = "C>T,G>A", required = False)
 
 	parser.add_argument('--mode', help = '[Global] which mode: "sea", "homer2" or "chip"', nargs = '?', choices = ['chip', 'homer2', 'sea'], default = 'sea', required = True)
+	parser.add_argument('--indiv-sea', dest = 'indiv', help = '[Global] (*optional, if --mode sea) specify when you analyzed SEA motif search for each sample separately', default = False, action = "store_true")
 
 	parser.add_argument('--chipseq', help = '[Step 6, --mode:chip] chip-seq reference', required = False)
 	parser.add_argument('--homer-ref', dest = 'hm2ref', help = '[Step 6, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"', default = 'grch38_crgatac', required = False)

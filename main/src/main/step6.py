@@ -8,7 +8,7 @@ import random
 from main.dnd_acc import *
 
 
-def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeakArg, sizeArg, dirArg, outputArg):
+def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeakArg, sizeArg, dirArg, outputArg, indivArg):
 	if modeArg == "sea":
 		outputArg += "step6_tfpeaks_sea/"
 	elif modeArg == "homer2":
@@ -19,8 +19,12 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 	if not os.path.exists(outputArg + sampleArg):	os.mkdir(outputArg + sampleArg)
 
 	if modeArg == "sea":
-		seqFile = dirArg + "step5_peaks/merged/meme_sea/sequences.tsv"
-		siteFile = dirArg + "step5_peaks/merged/meme_sea/sites.tsv"
+		if indivArg:
+			seqFile = dirArg + "step5_peaks/" + sampleArg + "/meme_sea/sequences.tsv"
+			siteFile = dirArg + "step5_peaks/"+ sampleArg + "/meme_sea/sites.tsv"
+		else:
+			seqFile = dirArg + "step5_peaks/merged/meme_sea/sequences.tsv"
+			siteFile = dirArg + "step5_peaks/merged/meme_sea/sites.tsv"
 
 		openSeq = open(seqFile, "r")
 		seqLines = openSeq.readlines()
