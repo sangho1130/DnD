@@ -174,6 +174,7 @@ Expected outputs are five directories in <-o>
 
 We found that having a common set of peaks in different samples is often convenient when comparing D&D edit signals. Part2 jointly calls peaks in all samples found in your <step5_peaks> directory and intersect with individual calls. Old peaks are moved to the <celltype_specific> directory in each sample. Users who do not wish to jointly call peaks can skip peak calling by specifying <--pass-peakcall>. Then, the script performs motif analysis using MEME Simple Enrichment Analysis (SEA) or HOMER2. Users can choose whether to use joint peak calls in <merged> directory or individual peak call by specifying the <--sample> argument. 
 
+
 ```
 $ python dnd_pt2.py -h
 
@@ -230,6 +231,7 @@ This step will create a "merged" directory with joint peak calling results in "s
         └── unfiltered
             ├── peaks_bkflt.narrowPeak
             └── summits_bkflt.bed
+            
 ```
 
 **Part 3: Motif annotation and D&D edit evaluation**
