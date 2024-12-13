@@ -127,7 +127,7 @@ optional arguments:
 $ python dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
 ```
 
-Expected outputs are five directories in <-o>
+Expected outputs are step1-5 directories in <-o>
 ```
 ├── step1_preprocess
 │   ├── ca46_ctcf
