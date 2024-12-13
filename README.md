@@ -171,18 +171,21 @@ Expected outputs are five directories in <-o>
 
 **Part 2: Joint peak calling and motif searching**
 
-We found that having a common set of peaks in different samples is often convenient when comparing D&D edit signals. Part2 jointly calls peaks in all samples found in your <step5_peaks> directory and intersect with individual calls. Old peaks are moved to the <celltype_specific> directory in each sample. Users who do not wish to jointly call peaks can skip this part.
+We found that having a common set of peaks in different samples is often convenient when comparing D&D edit signals. Part2 jointly calls peaks in all samples found in your <step5_peaks> directory and intersect with individual calls. Old peaks are moved to the <celltype_specific> directory in each sample. Users who do not wish to jointly call peaks can skip peak calling by specifying <--pass-peakcall>. Then, the script performs motif analysis using MEME Simple Enrichment Analysis (SEA) or HOMER2. Users can choose whether to use joint peak calls in <merged> directory or individual peak call by specifying the <--sample> argument. 
 
 ```
 $ python dnd_pt2.py -h
 
-usage: [-h] -d DIR [-o OUTPUT] --mode [{sea,homer2}] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--homer-ref HM2REF]
+usage:  [-h] -d DIR [-o OUTPUT] [--pass-peakcall] [--sample SAMPLE] --mode [{sea,homer2}] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--fasta FASTA]
+        [--homer-ref HM2REF]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
                         [Global] (*optional) output directory path
+  --pass-peakcall       [Global] (*optional) pass peak calling and perform motif analysis ONLY; default is DO NOT PASS
+  --sample SAMPLE       [Global] (*optional if <--pass-peakcall>) motif analysis for which sample: "joint" or specify sample name; default is "joint"
   --mode [{sea,homer2}]
                         [Global] which mode: "sea", "homer2"; default is "sea"
   --gsize GSIZE         [Step 5] (*optional) effective genome size for macs2 callpeak; default is hs
@@ -191,14 +194,14 @@ optional arguments:
                         [Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed
   --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
   --motif MOTIF         [Step 5, --mode:sea] (*optional) motif reference; default is <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme>
-  --homer-ref HM2REF    [Step 5, --mode:homer2] (*optional) homer2 reference"
-```
+  --fasta FASTA         [Step 5, --mode:sea] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
+  --homer-ref HM2REF    [Step 5, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"```
 
 ```
 $ python dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
 ```
 
-This step will add a "merged" directory with joint peak calling results in "step5_peaks", and intersected peaks in each sample's directory. Original MACS2 files will be stored in "celltype_specific" directory in each sample.
+This step will create a "merged" directory with joint peak calling results in "step5_peaks/", and intersected peaks in each sample's directory. Original MACS2 result files will be stored in "celltype_specific" directory in each sample.
 
 ```
 └── step5_peaks
@@ -233,23 +236,25 @@ This step will add a "merged" directory with joint peak calling results in "step
 ```
 $ python dnd_pt3.py -h
 
-usage: [-h] -d DIR [-o OUTPUT] [--size SIZE] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--chipseq CHIPSEQ] [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
+usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] [--rand RAND] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--indiv-sea] [--chipseq CHIPSEQ]
+                                          [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
                         [Global] (*optional) output directory path
-  --size SIZE           [Global] (*optional) test peak width size; default is 200
-  --sample SAMPLE       [Global] "sample name" or "all" for all samples in <step5>
+  --size SIZE           [Global] (*optional) test peak width size in bp; default is 200
+  --rand RAND           [Global] (*optional) down-sample peaks to this number; default is 200
+  --sample SAMPLE       [Global] specify <sample name> or <"all"> for all samples in <step5>
   --var VARIANTS        [Global] (*optional) expected D&D variants; default is "C>T,G>A"
   --mode [{chip,homer2,sea}]
-                        [Global] which mode: "chip", "homer2" or "sea"
+                        [Global] which mode: "sea", "homer2" or "chip"
+  --indiv-sea           [Global] (*optional, if --mode sea) specify when you analyzed SEA motif search for each sample separately
   --chipseq CHIPSEQ     [Step 6, --mode:chip] chip-seq reference
-  --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference"
+  --homer-ref HM2REF    [Step 6, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"
   --motif MOTIF [MOTIF ...]
-                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea"
-```
+                        [Step 6, --mode:homer2 or sea] <path to the homer2 motif file> for "homer2" or <TF name> for "sea", multiple arguments are supported```
 
 ```
 $ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
