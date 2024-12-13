@@ -273,6 +273,12 @@ Each "sample" directory has peaks, D&D edits, and footprint plots for TF binding
 ```
 step6_tfpeaks_sea/
 └── k562_gata1
+    ├── background.countNormalized.txt
+    ├── background.countPerPeak.txt
+    ├── context_di
+    ├── context_tri
+    ├── dnd_countNormalized.pdf
+    ├── dnd_countNormalized_SNR.pdf
     ├── motif_bkgd.narrowPeak
     ├── motif_bkgd.narrowPeak.CT_GA.vcf
     ├── motif_bkgd.narrowPeak.nonDnD.vcf
@@ -280,6 +286,13 @@ step6_tfpeaks_sea/
     ├── motif_bkgd.narrowPeak.width200
     ├── motif_bkgd.narrowPeak.width200.CT_GA.vcf
     ├── motif_bkgd.narrowPeak.width200.nonDnD.vcf
+    ├── motif_bkgd.narrowPeak.width200.vcf
+    ├── motif_bkgd.narrowPeak.width200.vcf.bed
+    ├── motif_bkgd.narrowPeak.width200.vcf.CT_+-5bp.bed
+    ├── motif_bkgd.narrowPeak.width200.vcf.CT_+-5bp.fasta
+    ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp.bed
+    ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp.fasta
+    ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp_revComp.fasta
     ├── motifCenteredCounts
     ├── motifCenteredCounts_nonDnD
     ├── motif_TF.narrowPeak
@@ -288,17 +301,20 @@ step6_tfpeaks_sea/
     ├── motif_TF.narrowPeak.motifCentered.width200.CT_GA.vcf
     ├── motif_TF.narrowPeak.motifCentered.width200.nonDnD.vcf
     ├── motif_TF.narrowPeak.motifCentered.width200.vcf
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.bed
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.CT_+-5bp.bed
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.CT_+-5bp.fasta
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.GA_+-5bp.bed
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.GA_+-5bp.fasta
+    ├── motif_TF.narrowPeak.motifCentered.width200.vcf.GA_+-5bp_revComp.fasta
     ├── motif_TF.narrowPeak.nonDnD.vcf
     ├── motif_TF.narrowPeak.vcf
     ├── motif_TF.narrowPeak.width200
     ├── motif_TF.narrowPeak.width200.CT_GA.vcf
     ├── motif_TF.narrowPeak.width200.nonDnD.vcf
-    ├── others.countNormalized.txt
-    ├── others.countPerPeak.txt
-    ├── snvs_countNormalized.pdf
-    ├── snvs_countNormalized_SNratio.pdf
-    ├── summitCenteredCounts
-    ├── summitCenteredCounts_nonDnD
+    ├── motif_TF.narrowPeak.width200.vcf
+    ├── resizedPeakCounts
+    ├── resizedPeakCounts_nonDnD
     ├── target.countNormalized.txt
     └── target.countPerPeak.txt
 ```
