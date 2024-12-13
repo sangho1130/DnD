@@ -88,6 +88,7 @@ D&D signals are collected and evaluated with three-step python scripts. By defau
 
 **Part 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
+*faster version is coming soon
 ```
 $ python dnd_pt1.py -h
 
