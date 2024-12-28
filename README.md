@@ -320,6 +320,45 @@ step6_tfpeaks_sea/
 ```
 
 
+**Part 3: Motif annotation and D&D edit evaluation**
+
+```
+$ python dnd_to_mtx.py -h
+usage: [-h] -v VCF [--ref REF] [--alt ALT] -p PEAK -b BAM [--flt-bam] -o OUTPUT
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v VCF, --Vcf VCF     input vcf file
+  --ref REF             (*optional) reference allele, rev.comp. is automatically considered; default is C
+  --alt ALT             (*optional) altered allele, rev.comp. is automatically considered; default is T
+  -p PEAK, --Peak PEAK  input peak file
+  -b BAM, --Bam BAM     input bam file
+  --flt-bam             (*optional) filter <-b/--Bam> using variants; default is NOT FILTERING
+  -o OUTPUT, --Output OUTPUT
+                        output directory path
+```
+
+```
+$ python dnd_to_mtx.py -v <D&D edit in vcf> -p <peaks with motif in bed> -b <bam file> -o <output path>
+```
+
+Now, seurat object with D&D edits can be generated using mtx.
+
+```
+$ tree test_edits/
+test_edits/
+├── dndedits.fragments.editCount.txt
+├── dndedits.fragments.txt
+├── dndedits.qnames.txt
+├── dndedits.txt
+├── fragments.tsv
+└── mtx
+    ├── barcodes.tsv
+    ├── matrix.mtx
+    └── peaks.bed
+```
+
+
 
 Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
 
