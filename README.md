@@ -357,7 +357,8 @@ test_edits/
     └── peaks.bed
 ```
 
-Now, D&D edits can be loaded in R using mtx. For example,  
+Now, D&D edits can be loaded in R using mtx and fragments file. 
+For example,  
 
 ```
 require(magrittr)
@@ -369,12 +370,11 @@ require(Signac)
 
 features <- readr::read_tsv("mtx/peaks.bed", col_names = F) %>% tidyr::unite(feature)
 barcodes <- readr::read_tsv("mtx/barcodes.tsv", col_names = F) %>% tidyr::unite(barcode)
-counts <- Matrix::readMM("mtx/matrix.mtx") %>% magrittr::set_rownames(features$feature) %>% magrittr::set_colnames(barcodes$barcode)
-features <- readr::read_tsv("mtx/peaks.bed", col_names = F) %>% tidyr::unite(feature)
-barcodes <- readr::read_tsv("mtx/barcodes.tsv", col_names = F) %>% tidyr::unite(barcode)
-counts <- Matrix::readMM("mtx/matrix.mtx") %>% magrittr::set_rownames(features$feature) %>% magrittr::set_colnames(barcodes$barcode)
+counts <- Matrix::readMM("mtx/matrix.mtx") %>% magrittr::set_rownames(features$feature) %>%
+    magrittr::set_colnames(barcodes$barcode)
 
-chrom_assay_ca46 <- Signac::CreateChromatinAssay(counts = counts, sep = c("_", "-"), fragments = "fragments.tsv.gz", min.cells = 0, min.features = 0)
+chrom_assay <- Signac::CreateChromatinAssay(counts = counts, sep = c("_", "-"),
+                        fragments = "fragments.tsv.gz", min.cells = 0, min.features = 0)
 ```
 
 
