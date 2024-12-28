@@ -377,7 +377,7 @@ counts <- Matrix::readMM("mtx/matrix.mtx") %>% magrittr::set_rownames(features$f
 chrom_assay <- Signac::CreateChromatinAssay(counts = counts, sep = c("_", "-"),
                         fragments = "fragments.tsv.gz", min.cells = 0, min.features = 0)
 
-dndObj <- Seurat::CreateSeuratObject(counts = chrom_assay, assay = "dnd")
+dndObj <- Seurat::CreateSeuratObject(counts = chrom_assay, project = "D&D", assay = "dnd")
 
 ```
 
