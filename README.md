@@ -367,6 +367,7 @@ require(Matrix)
 require(tidyr)
 require(dplyr)
 require(Signac)
+require(Seurat)
 
 features <- readr::read_tsv("mtx/peaks.bed", col_names = F) %>% tidyr::unite(feature)
 barcodes <- readr::read_tsv("mtx/barcodes.tsv", col_names = F) %>% tidyr::unite(barcode)
@@ -375,6 +376,9 @@ counts <- Matrix::readMM("mtx/matrix.mtx") %>% magrittr::set_rownames(features$f
 
 chrom_assay <- Signac::CreateChromatinAssay(counts = counts, sep = c("_", "-"),
                         fragments = "fragments.tsv.gz", min.cells = 0, min.features = 0)
+
+dndObj <- Seurat::CreateSeuratObject(counts = chrom_assay, assay = "dnd")
+
 ```
 
 
