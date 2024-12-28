@@ -379,6 +379,17 @@ chrom_assay <- Signac::CreateChromatinAssay(counts = counts, sep = c("_", "-"),
 
 dndObj <- Seurat::CreateSeuratObject(counts = chrom_assay, project = "D&D", assay = "dnd")
 
+head(dndObj@meta.data)
+#                    orig.ident nCount_dnd nFeature_dnd
+# AAACGAAAGACCGCAA-1        D&D          7            6
+# AAACGAAAGGATGTAT-1        D&D         15           14
+# AAACGAAAGTCACGCC-1        D&D          5            5
+# AAACGAACAGGTTATC-1        D&D         32           27
+# AAACGAATCTACATCT-1        D&D         31           28
+# AAACTCGAGTTACCAC-1        D&D         11            9
+
+# nCount_dnd = the number of D&D edits
+# nFeature_dnd = the number of edited peaks
 ```
 
 
