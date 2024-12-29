@@ -15,4 +15,5 @@ dependencies:
   - macs2
   - pysam
   - biopython
+  - pandas
 prefix: /gpfs/commons/home/shyoon/miniforge3/envs/dndseq

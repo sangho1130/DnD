@@ -1,3 +1,4 @@
+#!/gpfs/commons/home/shyoon/miniforge3/envs/dndseq/bin/python
 
 # 2024-12-28; version 1.0
 
@@ -168,7 +169,8 @@ def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg
 			fragDict[checkVar] += 1
 
 	outputArg += "dndedits.txt"
-	
+
+	print ("writing fragments.tsv")	
 	outwrite = open(outputArg, "w")
 	outwrite_f = open("/".join(outputArg.split("/")[:-1]) + "/fragments.tsv", "w")
 	prevLineCheck = ""
@@ -184,9 +186,11 @@ def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg
 	outwrite.close()
 	outwrite_f.close()
 
-	cmd_gz = bgzipArg + " /".join(outputArg.split("/")[:-1]) + "/fragments.tsv"
+	cmd_gz = bgzipArg + " " + "/".join(outputArg.split("/")[:-1]) + "/fragments.tsv"
+	print (cmd_gz)
 	subprocess.getoutput(cmd_gz)
 	cmd_idx = tabixArg + " --preset=bed " + "/".join(outputArg.split("/")[:-1]) + "/fragments.tsv.gz"
+	print (cmd_idx)
 	subprocess.getoutput(cmd_idx)
 
 	qnames = sorted(list(set( [x[1] for x in writeLines] )))
@@ -195,6 +199,7 @@ def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg
 	outwrite.close()
 	
 	if fltbamArg:
+		print ("filtering bam")
 		flt_bam_qnames(smtArg, bamArg, outputArg[:-3] + "qnames.txt")
 
 	return (outputArg)
@@ -202,6 +207,7 @@ def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg
 
 # 2
 def make_fragments(bdtArg, peakArg, editArg, outputArg):
+	print ("summarizing edits")
 	openPeak = open(peakArg, "r")
 	peakLines = openPeak.readlines()
 	openPeak.close()
@@ -316,6 +322,7 @@ def make_fragments(bdtArg, peakArg, editArg, outputArg):
 
 # 3
 def make_mtx(fragArg, outputArg):
+	print ("writing mtx")
 	outputArg += "mtx/"
 	if not os.path.exists(outputArg):
 		os.mkdir(outputArg)
