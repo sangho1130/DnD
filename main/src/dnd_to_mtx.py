@@ -1,4 +1,3 @@
-#!/gpfs/commons/home/shyoon/miniforge3/envs/dndseq/bin/python
 
 # 2024-12-28; version 1.0
 
