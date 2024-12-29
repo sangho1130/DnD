@@ -1,4 +1,3 @@
-#!/gpfs/commons/home/shyoon/miniforge3/envs/dndseq/bin/python
 
 # 2024-05-20; version 5.0
 # 2024-09-19; finalize with SEA
