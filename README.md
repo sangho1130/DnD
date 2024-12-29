@@ -322,7 +322,7 @@ step6_tfpeaks_sea/
 ```
 
 
-**Part 3: Motif annotation and D&D edit evaluation**
+**Part 4: Load D&D edit using Seurat**
 
 ```
 $ python dnd_to_mtx.py -h
