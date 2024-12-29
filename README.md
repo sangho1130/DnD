@@ -322,7 +322,7 @@ step6_tfpeaks_sea/
 ```
 
 
-**Part 4: Load D&D edits using Seurat**
+**Part 4: Load D&D edits**
 
 ```
 $ python dnd_to_mtx.py -h
