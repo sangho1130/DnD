@@ -88,18 +88,18 @@ D&D signals are collected and evaluated with three-step python scripts. By defau
 
 **Part 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
-*faster version is coming soon
 ```
-$ python dnd_pt1.py -h
-
-usage:  [-h] -d DIR [-o OUTPUT] [--thread THREAD] [--start START] [--end END] [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se] [--count COUNT] [--alt ALT] [--fasta FASTA] [--gnomad GNOMAD] [--pass-gnomad]
-        [--custom CUSTOM [CUSTOM ...]] [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
+$ python dnd_pt1_pysam.py -h
+usage:  [-h] -d DIR [-o OUTPUT] [--pysam] [--thread THREAD] [--start START] [--end END] [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se]
+        [--count COUNT] [--alt ALT] [--fasta FASTA] [--left LEFT] [--right RIGHT] [--gnomad GNOMAD] [--pass-gnomad] [--custom CUSTOM [CUSTOM ...]]
+        [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
                         [Global] (*optional) output directory path
+  --pysam               [Global] (*optional) run pysam version; default is mpileup
   --thread THREAD       [Global] (*optional) number of threads; default is 4
   --start START         [Global] (*optional) the first directory index
   --end END             [Global] (*optional) the last directory index
@@ -110,6 +110,8 @@ optional arguments:
   --count COUNT         [Step 2] (*optional) minimum total counts; default is 3
   --alt ALT             [Step 2] (*optional) minimum ALT counts; default is 2
   --fasta FASTA         [Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
+  --left LEFT           [Step 2] (*optional) ignore variants in this many bases on the left side of reads
+  --right RIGHT         [Step 2] (*optional) ignore variants in this many bases on the right side of reads
   --gnomad GNOMAD       [Step 3] (*optional) path to gnomAD vcf file
   --pass-gnomad         [Step 3] (*optional) do not run gnomAD filering
   --custom CUSTOM [CUSTOM ...]
