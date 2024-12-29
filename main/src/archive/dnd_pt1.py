@@ -3,7 +3,6 @@
 # 2024-09-19; finalize with SEA
 # 2024-11-27; minor updates
 # 2024-11-30; packaging
-# 2024-12-27; multiprocessing
 
 import argparse
 import os
@@ -11,9 +10,7 @@ import sys
 import subprocess
 import gzip
 import random
-import pysam
-from Bio import SeqIO
-from multiprocessing import Pool
+from multiprocessing import Process
 
 from main.step1 import *
 from main.step2 import *
@@ -39,22 +36,15 @@ def main(args):
 	
 	print ("### Step 1: Preprocessing ###")
 	bams = flt_bam(smt, pcd, args.Dir, args.Output, args.thread, args.mapq, args.chrom, args.other, args.se, args.start, args.end)
-
-	print ("### Step 2: Pileup ###")
-	if args.pysam:
-		pu_vcfs = pu_vcf_make(bams, int(args.thread), args.Output, args.fasta, args.chrom, args.count, args.alt, args.left, args.right)
-
-	else:
-		mpileups = mpileup_make(bcf, args.thread, args.Output, bams, args.fasta)
-
-		pu_vcfs = list()
-		for mpileup in mpileups:
-			pu_vcf = mpileup_vcf(mpileup, args.count, args.alt)
-			pu_vcfs.append(pu_vcf)
 	
+	print ("### Step 2: Pileup ###")
+	mpileups = mpileup_make(bcf, args.thread, args.Output, bams, args.fasta)
+
 	print ("### Step 3: VCF & filtering ###")
 	vcfs = list()
-	for pu_vcf in pu_vcfs:
+	for mpileup in mpileups:
+		pu_vcf = mpileup_vcf(mpileup, args.count, args.alt)
+
 		if not args.pass_germline:
 			sort_vcf = True
 			pu_vcf = flt_vcf(bdt, pu_vcf, args.gnomad, args.Output, sort_vcf)
@@ -112,9 +102,8 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser('')
 	parser.add_argument('-d', '--Dir', help = 'directory path', required = True)
 	parser.add_argument('-o', '--Output', help = '[Global] (*optional) output directory path', required = False)
-	parser.add_argument('--pysam', help = "[Global] (*optional) run pysam version; default is mpileup", required = False, default = False, action = 'store_true')
-
 	parser.add_argument('--thread', help = "[Global] (*optional) number of threads; default is 4", type = str, default = "4", required = False)
+
 	parser.add_argument('--start', type = int, help = '[Global] (*optional) the first directory index', required = False)
 	parser.add_argument('--end', type = int, help = '[Global] (*optional) the last directory index', required = False)
 
@@ -126,8 +115,6 @@ if __name__ == '__main__':
 	parser.add_argument('--count', help = '[Step 2] (*optional) minimum total counts; default is 3', type = int, default = 3, required = False)
 	parser.add_argument('--alt', help = '[Step 2] (*optional) minimum ALT counts; default is 2', type = int, default = 2, required = False)
 	parser.add_argument('--fasta', help = '[Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa', default = "~/DnD/genome/genome.fa", required = False)
-	parser.add_argument('--left', help = '[Step 2] (*optional) ignore variants in this many bases on the left side of reads', required = False, default = 5, type = int)
-	parser.add_argument('--right', help = '[Step 2] (*optional) ignore variants in this many bases on the right side of reads', required = False, default = 5, type = int)
 
 	parser.add_argument('--gnomad', help = '[Step 3] (*optional) path to gnomAD vcf file', default = "~/DnD/filter/somatic-hg38-af-only-gnomad.hg38.chrs.vcf.gz", required = False)
 	parser.add_argument('--pass-gnomad', dest = 'pass_germline', help = '[Step 3] (*optional) do not run gnomAD filering', required = False, default = False, action = 'store_true')

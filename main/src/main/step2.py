@@ -5,10 +5,11 @@ import sys
 import subprocess
 import gzip
 import random
-from multiprocessing import Process
+import pysam
+from Bio import SeqIO
+from multiprocessing import Pool
 
 
-### re-write to multi-core compatible version
 def mpileup_make(bcfArg, threadArg, outputArg, bamArgs, fastaArg):
 	outputArg += "step2_mpileup/"
 	if not os.path.exists(outputArg):
@@ -95,6 +96,108 @@ def mpileup_vcf(pileupArg, countArg, altArg):
 	outwrite.close()
 
 	return outputFile
+
+
+def pysam_pileup(bamArg, chrArg, countArg, altCountArg, l_trimArg, r_trimArg, gDict):
+	samfile = pysam.AlignmentFile(bamArg, "rb")
+
+	varLines = list()
+	for pileupcolumn in samfile.pileup(chrArg):
+		pos = pileupcolumn.pos +1
+		dp = pileupcolumn.n
+		if dp < countArg: continue
+
+		ref_allele = gDict[chrArg].seq[pileupcolumn.pos]
+		if ref_allele == "N": continue
+
+		ntDict = {"A":0, "T":0, "G":0, "C":0}
+		for pileupread in pileupcolumn.pileups:
+			pos_in_read = pileupread.query_position
+			if pos_in_read == None: continue # deletion
+
+			nt_in_read = pileupread.alignment.query_sequence[pos_in_read]
+			if nt_in_read == "N": continue
+		
+			len_of_read = len(pileupread.alignment.query_sequence)
+
+			if nt_in_read != ref_allele:
+				if pos_in_read > l_trimArg and pos_in_read < len_of_read - r_trimArg:
+					ntDict[nt_in_read] += 1
+			else:	ntDict[nt_in_read] += 1
+
+		if sum(ntDict.values()) < countArg:	continue
+
+		ref_allele_count = str(ntDict[ref_allele])
+		alt_alleles = [alt for alt in ntDict.keys() if alt != ref_allele and ntDict[alt] >= altCountArg]
+		for alt_allele in alt_alleles:
+			if ntDict[alt_allele] == 0:	continue
+			pos_info = "DP=" + str(dp) + ";" + "AD=" + str(ntDict[ref_allele]) + "," + str(ntDict[alt_allele])
+			alt_info = str(ntDict[ref_allele] + ntDict[alt_allele]) + ":" + str(ntDict[ref_allele]) + "," + str(ntDict[alt_allele])
+
+			writeLine = [chrArg, str(pos), ".", ref_allele, alt_allele, "0", ".", pos_info, "DP:AD", alt_info]
+			writeLine = "\t".join(writeLine) + "\n"
+			varLines.append(writeLine)
+
+	samfile.close()
+	return (varLines)
+
+
+def pysam_pileup_mp(args):
+	bamArg, chrm, countArg, altArg, leftTrimArg, rightTrimArg, fastaArg = args
+	record_dict = SeqIO.index(fastaArg, "fasta")
+	puLines_chrm = pysam_pileup(bamArg, chrm, countArg, altArg, leftTrimArg, rightTrimArg, record_dict)
+	return (puLines_chrm)
+
+
+def pu_vcf_make(bamArgs, threadArg, outputArg, fastaArg, chromArg, countArg, altArg, leftTrimArg, rightTrimArg):
+	if not os.path.exists(outputArg):
+		os.mkdir(outputArg)
+	outputArg += "step3_fltvcf/"
+	if not os.path.exists(outputArg):
+		os.mkdir(outputArg)
+
+	record_dict = SeqIO.index(fastaArg, "fasta")
+	chrms = list(record_dict.keys())
+	if not chromArg:
+		chrms = [x for x in chrms if x.startswith("chr") and x != "chrM"]
+	chrms.sort()
+
+	resvcfs = list()
+	for bamArg in bamArgs:
+		sampleName = bamArg.split("/")[-2]
+		if not os.path.exists(outputArg + sampleName):
+			os.mkdir(outputArg + sampleName)
+		resvcf = outputArg + sampleName + "/" + bamArg.split("/")[-1].replace("bam", "vcf")
+		
+		writeLines = list()
+		writeLines.append("##fileformat=VCFv4.2\n")
+		writeLines.append("##reference=file://" + fastaArg + "\n")
+
+		for chrm in chrms:
+			writeLine = "##contig=<ID=" + chrm + ",length=" + str(len(record_dict[chrm])) + ">\n"
+			writeLines.append(writeLine)
+		writeLines.append("#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tPILEUP\n")
+
+		args_list = [ (bamArg, chrm, countArg, altArg, leftTrimArg, rightTrimArg, fastaArg) for chrm in chrms ]
+		p = Pool(threadArg)
+		try:
+			print ("running")
+			puLines = p.map(pysam_pileup_mp, args_list)
+		finally:
+			print ("pooling")
+			p.close()
+			p.join()
+		print ("sum")
+		puLines = sum(puLines, [])
+		print ("append")
+		writeLines += puLines
+
+		outwrite = open(resvcf, "w")
+		outwrite.write("".join(writeLines))
+		outwrite.close()
+		resvcfs.append(resvcf)
+
+	return (resvcfs)
 
 
 
