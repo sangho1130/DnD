@@ -1,6 +1,6 @@
 # **D&Dseq: Docking and Deamination followed by sequencing** 
 
-Out preprint is now available!
+Our preprint is now available! 
 https://doi.org/10.1101/2024.12.31.630903
 
 ![plot](./main/figs/DnD_workflow.png)
