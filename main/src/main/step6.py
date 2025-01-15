@@ -48,12 +48,12 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		peakDict = dict()
 		for motifLine in motifLines:
 			motifLine = motifLine.rstrip().split()
-			if motifLine[1] not in peakDict:
+			if motifLine[2] not in peakDict:
 				# key: peak name, items: site start, site end, strand, site score
-				peakDict[motifLine[1]] = [int(motifLine[2]), int(motifLine[3]), motifLine[4], float(motifLine[5])]
+				peakDict[motifLine[2]] = [int(motifLine[3]), int(motifLine[4]), motifLine[5], float(motifLine[6])]
 			else:
-				if peakDict[motifLine[1]][3] < float(motifLine[5]):
-					peakDict[motifLine[1]] = [int(motifLine[2]), int(motifLine[3]), motifLine[4], float(motifLine[5])]
+				if peakDict[motifLine[2]][3] < float(motifLine[6]):
+					peakDict[motifLine[2]] = [int(motifLine[3]), int(motifLine[4]), motifLine[5], float(motifLine[6])]
 				else:	pass
 		usepeaks = list(peakDict.keys())
 
