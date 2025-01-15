@@ -30,9 +30,9 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		seqLines = openSeq.readlines()
 		openSeq.close()
 		
-		seqLines = [x.rstrip().split() for x in seqLines[1:] if x[0] != "#"]
+		seqLines = [x.rstrip().split("\t") for x in seqLines[1:] if x[0] != "#"]
 		usepeaks = list()
-		for motif in motifArg:	usepeaks += [x[2] for x in seqLines if x[1] == motif and x[4] == "tp"]
+		for motif in motifArg:	usepeaks += [x[3] for x in seqLines if x[1] == motif and x[5] == "tp"]
 		print (len(usepeaks))
 
 		openSite = open(siteFile, "r")
