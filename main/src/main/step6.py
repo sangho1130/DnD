@@ -42,7 +42,7 @@ def tf_peaks(modeArg, bdtArg, hm2Arg, hm2RefArg, sampleArg, motifArg, targetPeak
 		motifLines = list()
 		for motif in motifArg:
 			tmpLines = [x for x in siteLines[1:] if x[0] != "#" and x.strip().split()[0] == motif]
-			tmpLines = [x for x in tmpLines if x.rstrip().split()[1] in usepeaks]
+			tmpLines = [x for x in tmpLines if x.rstrip().split("\t")[2] in usepeaks]
 			motifLines += tmpLines
 
 		peakDict = dict()
