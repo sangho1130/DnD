@@ -123,7 +123,8 @@ def pysam_pileup(bamArg, chrArg, countArg, altCountArg, l_trimArg, r_trimArg, gD
 			if nt_in_read != ref_allele:
 				if pos_in_read > l_trimArg and pos_in_read < len_of_read - r_trimArg:
 					ntDict[nt_in_read] += 1
-			else:	ntDict[nt_in_read] += 1
+				else:	ntDict[ref_allele] += 1
+			else:	ntDict[ref_allele] += 1
 
 		if sum(ntDict.values()) < countArg:	continue
 
