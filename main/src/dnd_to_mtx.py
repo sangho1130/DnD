@@ -1,5 +1,7 @@
+#!/gpfs/commons/home/shyoon/miniforge3/envs/dndseq/bin/python
 
 # 2024-12-28; version 1.0
+# 2025-01-20; trimming update
 
 import os
 import sys
@@ -18,7 +20,10 @@ def Convert(t, d):
 	return d
 
 
-def get_read_info(chunk, bam_path):
+def get_read_info(chunk, bam_path, ltrim, rtrim):
+	ltrim = ltrim-1 # 0-base
+	rtrim = rtrim-1 # 0-base
+
 	samfile = pysam.AlignmentFile(bam_path, "rb")
 	read_level = []
 	bed_df =[]
@@ -42,11 +47,12 @@ def get_read_info(chunk, bam_path):
 				BASE = read_seq[di[PYSAM_POSITION][0]]
 
 				if BASE == variantAllele:
-					name = read.query_name
-					add_seq = "="*di[PYSAM_POSITION][0] + BASE + "="*len(read_seq[di[PYSAM_POSITION][0]+1: ])
-					read_flag = read.flag
-					read_bc = read.get_tag("CB")
-					read_level.append([chunk.loc[variant,'change'], name, str(read_flag), add_seq, read_bc])
+					if di[PYSAM_POSITION][0] > ltrim and len(read_seq[di[PYSAM_POSITION][0]+1: ]) > rtrim:
+						name = read.query_name
+						add_seq = "="*di[PYSAM_POSITION][0] + BASE + "="*len(read_seq[di[PYSAM_POSITION][0]+1: ])
+						read_flag = read.flag
+						read_bc = read.get_tag("CB")
+						read_level.append([chunk.loc[variant,'change'], name, str(read_flag), add_seq, read_bc])
 	
 	if umiFlag:
 		readCols =["variantName", "readName", "readFlag", "readSeq", "Barcode", "UMI"]
@@ -146,7 +152,7 @@ def flt_bam_qnames(smtArg, bamArg, qnameArg):
 	subprocess.getoutput(cmd_idx)
 
 
-def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg, altArg, fltbamArg):
+def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg, altArg, fltbamArg, ltrimArg, rtrimArg):
 	edits = pd.read_table(vcfArg, header = None, comment='#', usecols = [0,1,3,4])
 	edits.columns = ["chr", "position", "ref", "alt"]
 	edits["change"] = edits["chr"] + ">" + edits["position"].astype(str) + ">" + edits["ref"] + ">" + edits["alt"]
@@ -155,7 +161,7 @@ def make_edit_info(smtArg, bgzipArg, tabixArg, vcfArg, bamArg, outputArg, refArg
 	revcompDict = {"A":"T", "T":"A", "G":"C", "C":"G"}
 	edits = edits[ (edits["ref"] == refArg) & (edits["alt"] == altArg) | (edits["ref"] == revcompDict[refArg]) & (edits["alt"] == revcompDict[altArg])]
 
-	readNameLines = get_read_info(edits, bamArg)
+	readNameLines = get_read_info(edits, bamArg, ltrimArg, rtrimArg)
 	writeLines = select_redun_reads(readNameLines)
 	writeLines = add_editColumn(writeLines)
 
@@ -392,7 +398,7 @@ def main(args):
 		args.Output += "/"
 
 	# 1
-	editInfo = make_edit_info(smt, bgzip, tabix, args.Vcf, args.Bam, args.Output, args.ref, args.alt, args.fltbam)
+	editInfo = make_edit_info(smt, bgzip, tabix, args.Vcf, args.Bam, args.Output, args.ref, args.alt, args.fltbam, args.left, args.right)
 	# 2
 	fragInfo = make_fragments(bdt, args.Peak, editInfo, args.Output)
 	# 3
@@ -404,6 +410,8 @@ if __name__ == '__main__':
 	parser.add_argument('-v', '--Vcf', help = 'input vcf file', required = True)
 	parser.add_argument('--ref', help = "(*optional) reference allele, rev.comp. is automatically considered; default is C", required = False, default = "C")
 	parser.add_argument('--alt', help = "(*optional) altered allele, rev.comp. is automatically considered; default is T", required = False, default = "T")
+	parser.add_argument('--left', help = '(*optional) ignore variants in this many bases on the left side of reads', required = False, default = 5, type = int)
+	parser.add_argument('--right', help = '(*optional) ignore variants in this many bases on the right side of reads', required = False, default = 5, type = int)
 
 	parser.add_argument('-p', '--Peak', help = 'input peak file', required = True)
 	parser.add_argument('-b', '--Bam', help = 'input bam file', required = True)
