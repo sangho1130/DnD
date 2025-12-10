@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dnd-src"
+version = "0.1.0"
+requires-python = ">=3.9"
+
+[project.scripts]
+dnd-pt1 = "dnd_pt1:main"
+dnd-pt2 = "dnd_pt2:main"
+dnd-pt3 = "dnd_pt3:main"
+dnd-pt4 = "dnd_pt4:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["dnd_pt1", "dnd_pt2", "dnd_pt3", "dnd_pt4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+main = ["tools.R", "data/*"]
+
+
+

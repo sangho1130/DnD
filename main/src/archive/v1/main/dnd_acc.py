@@ -5,7 +5,7 @@ import sys
 import subprocess
 import gzip
 import random
-import importlib.resources
+
 
 def remove_temp(pathArg, patternArg):
 	if pathArg == "":
@@ -115,90 +115,6 @@ def non_Dnd_vcf(vcfArg, varArgs):
 	outwrite.close()
 
 
-def remove_lowcov(bdtArg, bedArg, vcfArg, genomeOrderArg):
-	cmd = bdtArg + " intersect -wa -a " + bedArg
-	cmd += " -b " + vcfArg
-	cmd += " > " + vcfArg[:-3] + ".bed"
-	print(cmd)
-	subprocess.getoutput(cmd)
-
-	cmd = bdtArg + " sort" 
-	cmd += " -g " + genomeOrderArg
-	cmd += " -i " + vcfArg[:-3] + ".bed"
-	cmd += " > " + vcfArg[:-3] + "sorted.bed"
-	print(cmd)
-	subprocess.getoutput(cmd)
-
-	cmd = bdtArg + " sort -header"
-	cmd += " -g " + genomeOrderArg
-	cmd += " -i " + vcfArg
-	cmd += " > " + vcfArg[:-3] + "sorted.vcf"
-	print(cmd)
-	subprocess.getoutput(cmd)
-
-	openBed = open(vcfArg[:-3] + "sorted.bed", "r")
-	bedLines = openBed.readlines()
-	openBed.close()
-
-	openVcf = open(vcfArg[:-3] + "sorted.vcf", "r")
-	vcfLines = openVcf.readlines()
-	openVcf.close()
-	
-	header = [x for x in vcfLines if x.startswith("#")]
-	vcfLines = [x for x in vcfLines if x[0] != "#"]
-
-	peakorder = list()
-	writeVcfDict = dict()
-	peakDict = dict()
-	editDict = dict()
-
-	for i in range(0, len(vcfLines)):
-		vcfLine = vcfLines[i].rstrip().split("\t")
-		bedLine = bedLines[i].rstrip().split("\t")
-		peakname = bedLine[3]
-		dp = int(vcfLine[9].split(":")[0])
-		editname = "_".join([vcfLine[0], vcfLine[1], vcfLine[3], vcfLine[4]])
-		if peakname not in peakorder:
-			peakorder.append(peakname)
-		if peakname not in peakDict:
-			peakDict[peakname] = [0, list()]
-			writeVcfDict[peakname] = list()
-		
-		peakDict[peakname][0] += 1
-		peakDict[peakname][1].append(dp)
-		writeVcfDict[peakname].append("\t".join(vcfLine) + "\n")
-
-		editDict[editname] = peakname
-
-	for i in range(0, len(vcfLines)):
-		vcfLine = vcfLines[i].rstrip().split()
-		dp = int(vcfLine[9].split(":")[0])
-		if dp < 10:
-			editname = "_".join([vcfLine[0], vcfLine[1], vcfLine[3], vcfLine[4]])
-			peakname = editDict[editname]
-			if peakDict[peakname][0] == 1:
-				writeVcfDict.pop(peakname, None)
-			else:
-				if max(peakDict[peakname][1]) < 10:
-					writeVcfDict.pop(peakname, None)
-	
-	outwrite = open(vcfArg, "w")
-	outwrite.write("".join(header))
-	for peak in peakorder:
-		if peak in writeVcfDict:
-			writeLine = "".join(writeVcfDict[peak])
-			outwrite.write(writeLine)
-	outwrite.close()
-
-	rmCmd = "rm " + vcfArg[:-3] + ".bed"
-	subprocess.getoutput(rmCmd)
-	rmCmd = "rm " + vcfArg[:-3] + "sorted.bed"
-	subprocess.getoutput(rmCmd)
-	rmCmd = "rm " + vcfArg[:-3] + "sorted.vcf"
-	subprocess.getoutput(rmCmd)
-
-
-
 def merge_beds(motif_peak_files):
 	openMp = open(motif_peak_files[0], 'r')
 	mpLines = openMp.readlines()
@@ -252,16 +168,6 @@ def countOnlySnvs(vcfArg, peakArg, outputArg):
 			"A>T":"A>T", "A>G":"A>G", "A>C":"A>C",
 			"C>T":"C>T", "C>A":"C>A", "C>G":"C>G"}
 
-	###
-	vcfDict = dict()
-	for vcfLine in vcfLines:
-		chrm = vcfLine.split()[0]
-		if chrm not in vcfDict:
-			vcfDict[chrm] = list()
-		vcfDict[chrm].append(vcfLine)
-	###
-
-
 	for peakLine in peakLines:
 		peakLine = peakLine.rstrip().split()
 		chrm = peakLine[0]
@@ -273,21 +179,18 @@ def countOnlySnvs(vcfArg, peakArg, outputArg):
 		peakKey = peakname + "_" + str(peakrange)
 		ppeakDict[peakKey] = {"A>T":0, "A>G":0, "A>C":0, "C>A":0, "C>T":0, "C>G":0}
 
-		for vcfLine in vcfDict[chrm]:#for vcfLine in vcfLines:
+		for vcfLine in vcfLines:
 			vcfLine = vcfLine.rstrip().split()
 
 			chrm_vcf = vcfLine[0]
 			coord_vcf = int(vcfLine[1])
 			ref_vcf = vcfLine[3]
 			alt_vcf = vcfLine[4]
-			if len(vcfLine) == 12:
-				count_vcf = int(vcfLine[-3].split(",")[-1]) 
-			else: # old version
-				count_vcf = int(vcfLine[-1].split(",")[-1])
+			count_vcf = int(vcfLine[-1].split(",")[-1]) 
 
-			#if chrm != chrm_vcf:    continue
-			if start > coord_vcf:	continue#elif start > coord_vcf: continue
-			elif end < coord_vcf:   break#continue
+			if chrm != chrm_vcf:    continue
+			elif start > coord_vcf: continue
+			elif end < coord_vcf:   continue
 
 			snpKey = ref_vcf + ">" + alt_vcf
 			snpKey = revcompDict[snpKey]
@@ -351,7 +254,7 @@ def motif_centered_peaks(bdtArg, tfPeakArg, offsetArg, testSizeArg):
 	outwrite.close()
 
 	cmd_sort = bdtArg + " sort"
-	cmd_sort += " -g " + str(importlib.resources.files("main")) + "/data/GRCh38.p14.genome.chrs.bed"
+	cmd_sort += " -g " + "~/dnd/genome/GRCh38.p14.genome.chrs.bed"
 	cmd_sort += " -i " + tfPeakArg + ".motifCentered.width" + testSizeArg + "__tmp__"
 	cmd_sort += " > " + tfPeakArg + ".motifCentered.width" + testSizeArg
 
@@ -360,6 +263,7 @@ def motif_centered_peaks(bdtArg, tfPeakArg, offsetArg, testSizeArg):
 
 	cmd_rm = remove_temp( "/".join(tfPeakArg.split("/")[:-1]), tfPeakArg.split("/")[-1] + ".motifCentered.width" + testSizeArg + "__tmp__" )
 	subprocess.getoutput(cmd_rm)
+	#subprocess.getoutput("rm " + tfPeakArg + ".motifCentered.width" + testSizeArg + "__tmp__")
 
 
 def motifCenteredCounts(peakArg, vcfArg, bkgdPeakArg, bkgdVcfArg, outputArg, sizeArg, sampArg, editArg, editVars):
@@ -391,18 +295,15 @@ def motifCenteredCounts(peakArg, vcfArg, bkgdPeakArg, bkgdVcfArg, outputArg, siz
 			randIdx = sorted(random.sample(range(len(peakLines)), sampArg))
 			peakLines_sampled = [peakLines[i] for i in randIdx]
 
+			newLines = list()
 			for vcfLine in vcfLines:
 				testLine = vcfLine.rstrip().split()
 				vcfChr = testLine[0]
 				vcfPos = int(testLine[1])
 				vcfRef = testLine[3]
 				vcfAlt = testLine[4]
-				if len(testLine) == 12:
-					vcfCount = int(testLine[-3].split(",")[-1])
-					vcfDp = int(testLine[-3].split(":")[0])
-				else: # old version
-					vcfCount = int(testLine[-1].split(",")[-1])
-					vcfDp = int(testLine[-1].split(":")[0])
+				vcfCount = int(testLine[-1].split(",")[-1])
+				vcfDp = int(testLine[-1].split(":")[0])
 				vcfFrac = vcfCount/vcfDp ###
 
 				if editArg == "DnD":

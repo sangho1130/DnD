@@ -92,35 +92,26 @@ def flt_vcf(bdtArg, vcfArg, rmArg, outputArg, sortArg):
 	return outputArg + resultFile + "flt.vcf"
 
 
-def flt_vaf(vcfArg, vafArg, altArg):
+def flt_vaf(vcfArg, vafArg):
 	openVcf = open(vcfArg, "r")
 	vcfLines = openVcf.readlines()
 	openVcf.close()
-
-	min_depth = altArg * 100/vafArg
+	
 	writeLines = [x for x in vcfLines if x.startswith("#")]
 	for vcfLine in vcfLines:
 		if vcfLine.startswith("#"):	continue
 		tmpLine = vcfLine.rstrip().split()
-		info = tmpLine[-3]
+		info = tmpLine[-1]
 		depth = int(info.split(":")[0])
 		variant = int(info.split(":")[1].split(",")[1])
 		vaf = variant/depth*100.0
-		if depth < min_depth:
-			if vafArg >= 50:
-				if vaf <= vafArg:
-					writeLines.append(vcfLine)
-			else:
-				if vaf < 50:
-					writeLines.append(vcfLine)
-		else:
-			if vaf <= vafArg:
-				writeLines.append(vcfLine)
+		if vaf <= vafArg:
+			writeLines.append(vcfLine)
 
 	outwrite = open(vcfArg, "w")
 	outwrite.write("".join(writeLines))
 	outwrite.close()
-
+	
 	return vcfArg
 
 
