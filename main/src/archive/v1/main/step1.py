@@ -18,7 +18,7 @@ def picard_markDup(pcdArg, dirArg, outputArg, bamArg):
 	return cmd, "__tmp_rmDup__" + bamArg.lower()
 
 
-def samtools_flt(smtArg, outputArg, bamArg, threadArg, mapqArg, chromArg, otherArg, seArg, gsizeArg):
+def samtools_flt(smtArg, outputArg, bamArg, threadArg, mapqArg, chromArg, otherArg, seArg):
 	cmd = smtArg + " view -b"
 	cmd += ' --threads ' + threadArg
 	cmd += ' -q ' + mapqArg # 20 by default
@@ -26,10 +26,7 @@ def samtools_flt(smtArg, outputArg, bamArg, threadArg, mapqArg, chromArg, otherA
 		cmd += ' -f 0x2' # read mapped in proper pair
 	cmd += ' -F 256' # leave only primary alignment
 	if not chromArg:
-		if gsizeArg == "mm":
-			cmd += ' -L ' + str(importlib.resources.files("main")) + "/data/mm10.genome.chrs.bed"
-		else:
-			cmd += ' -L ' + str(importlib.resources.files("main")) + "/data/GRCh38.p14.genome.chrs.bed"
+		cmd += ' -L ' + '~/DnD/genome/GRCh38.p14.genome.chrs.bed'
 	if otherArg:
 		cmd += ' ' + otherArg
 	cmd += ' ' + outputArg + bamArg
@@ -37,7 +34,7 @@ def samtools_flt(smtArg, outputArg, bamArg, threadArg, mapqArg, chromArg, otherA
 	return cmd, bamArg.replace('__tmp_rmDup__', '')
 
 
-def flt_bam(smtArg, pcdArg, dirArg, outputArg, threadArg, mapqArg, chromArg, otherArg, seArg, gsizeArg, startArg, endArg):
+def flt_bam(smtArg, pcdArg, dirArg, outputArg, threadArg, mapqArg, chromArg, otherArg, seArg, startArg, endArg):
 	if not os.path.exists(outputArg):
 		os.mkdir(outputArg)
 	outputArg += "step1_preprocess/"
@@ -65,7 +62,7 @@ def flt_bam(smtArg, pcdArg, dirArg, outputArg, threadArg, mapqArg, chromArg, oth
 		print (cmd_markDup, "\n")
 		subprocess.getoutput(cmd_markDup)
 		
-		cmd_smtFlt, resBam = samtools_flt(smtArg, outputArg + bamDir + "/", resBam, threadArg, mapqArg, chromArg, otherArg, seArg, gsizeArg)
+		cmd_smtFlt, resBam = samtools_flt(smtArg, outputArg + bamDir + "/", resBam, threadArg, mapqArg, chromArg, otherArg, seArg)
 		print (cmd_smtFlt, "\n")
 		subprocess.getoutput(cmd_smtFlt)
 

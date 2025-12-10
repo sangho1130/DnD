@@ -88,7 +88,7 @@ plot_footprint <- function(dirPath) {
     scale_color_manual(values = c("red2", "grey60")) +
     scale_fill_manual(values = c("red2", "grey60")) +
     scale_x_discrete(breaks = seq(from = -100, to = 100, by = 10)) + 
-    labs(x = "Distance", y = "Normalized edit count") + 
+    labs(x = "Distance", y = "Eidt count") +
     myTheme +
     theme(legend.position = "none")
   ggsave("footprint.pdf", units = "cm", width = 15, height = 12)

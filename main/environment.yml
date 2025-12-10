@@ -1,0 +1,18 @@
+name: dndseq
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - r=4.3
+  - python=3.9
+  - bedtools
+  - picard
+  - samtools
+  - bcftools
+  - pysam
+  - pandas
+  - macs2
+  - biopython
+  - meme
+  - homer
