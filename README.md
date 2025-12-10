@@ -41,25 +41,30 @@ D&D pipeline was tested on Python 3.9.19 and R 4.3.3 using mamba (https://mamba.
 
 rtrackpayer (Bioconductor, https://doi.org/doi:10.18129/B9.bioc.rtracklayer), ggplot2, and reshape2 are required.
 
+Dependencies and requirements are specified in [main/environment.yml](main/environment.yml).
+
+```
+git clone https://github.com/sangho1130/DnD.git
+cd DnD/main/
+
+# create a conda environment
+conda env create -f environment.yml
+conda activate dndseq
+
+# install dndseq pipeline
+pip install -e .
+which dnd-pt1
+
+# test run
+# download a mini data from https://doi.org/10.6084/m9.figshare.30853628
+# and place it in this location
+# then run,
+sbatch cmd_dnd.sh 
+```
+
 HOMER2 can be downloaded from https://homer-fnirs.org
 
 MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
-
-Other dependencies and requirements are specified in [main/environment](main/environment).
-
-Core tools required are,
-| **tool** | **tested version** |
-| -------- | -------- |
-| Python   | 3.9.19   |
-| picard   | 3.1.1    |
-| samtools | 1.19     |
-| bcftools | 1.21     | 
-| bedtools | 2.31.1   |
-| bedops   | 2.4.41   | 
-| vcf2bed  | 2.4.41   |
-| macs2    | 2.2.9.1  |
-| HOMER    | 4.11.1   |
-| MEME     | 5.5.5    |
 
 | **database** | **note** |
 | -------- | ------- |
@@ -74,13 +79,14 @@ Bam files for samples, cell cluster or subclusters should be prepared in the fol
 ```
 $ tree bams
 
+# should be structured like below
 bams
-├── ca46_ctcf
-│   ├── ca46.5perc.bam
-│   └── ca46.5perc.bam.bai
-└── k562_gata1
-    ├── k562.10perc.bam
-    └── k562.10perc.bam.bai
+├── dndseq_ctcf_chr1
+│   ├── k562_ctcf_chr1.bam
+│   └── k562_ctcf_chr1.bam.bai
+└── (...)
+    ├── (...).bam
+    └── (...).bam.bai
 ```
 
 ## Running D&D analytic pipeline
@@ -90,30 +96,28 @@ D&D signals are collected and evaluated with three-step python scripts. By defau
 **Part 1: preprocessing, collecting and filtering variants, and first round peak calling**
 
 ```
-$ python dnd_pt1_pysam.py -h
-usage:  [-h] -d DIR [-o OUTPUT] [--pysam] [--thread THREAD] [--start START] [--end END] [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se]
-        [--count COUNT] [--alt ALT] [--fasta FASTA] [--left LEFT] [--right RIGHT] [--gnomad GNOMAD] [--pass-gnomad] [--custom CUSTOM [CUSTOM ...]]
-        [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
+$ dnd-pt1 --help
+usage:  [-h] -d DIR [-o OUTPUT] [--thread THREAD] [--start START] [--end END] --fasta FASTA --gnomad GNOMAD [--mapq MAPQ] [--chrom] [--smt-other OTHER] [--se] [--count COUNT] [--alt ALT] [--left LEFT] [--right RIGHT] [--pass-gnomad]
+        [--custom CUSTOM [CUSTOM ...]] [--vaf VAF] [--snv SNV] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
                         [Global] (*optional) output directory path
-  --pysam               [Global] (*optional) run pysam version; default is mpileup
   --thread THREAD       [Global] (*optional) number of threads; default is 4
   --start START         [Global] (*optional) the first directory index
   --end END             [Global] (*optional) the last directory index
+  --fasta FASTA         [Global] genome fasta (indexed) used in alignment
+  --gnomad GNOMAD       [Global] path to gnomAD vcf file
   --mapq MAPQ           [Step 1] (*optional) threshold for mapping quality; default is 20
   --chrom               [Step 1] (*optional) do not filter non-chromosome
   --smt-other OTHER     [Step 1] (*optional) other filter parameters for samtools in "~"
   --se                  [Step 1] (*optional) input bam is single-end
   --count COUNT         [Step 2] (*optional) minimum total counts; default is 3
-  --alt ALT             [Step 2] (*optional) minimum ALT counts; default is 2
-  --fasta FASTA         [Step 2] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
+  --alt ALT             [Step 2] (*optional) minimum ALT counts; default is 1
   --left LEFT           [Step 2] (*optional) ignore variants in this many bases on the left side of reads
   --right RIGHT         [Step 2] (*optional) ignore variants in this many bases on the right side of reads
-  --gnomad GNOMAD       [Step 3] (*optional) path to gnomAD vcf file
   --pass-gnomad         [Step 3] (*optional) do not run gnomAD filering
   --custom CUSTOM [CUSTOM ...]
                         [Step 3] (*optional) custom vcf file(s) to filter, multiple files are accepted
@@ -122,54 +126,35 @@ optional arguments:
   --gsize GSIZE         [Step 5] (*optional) effective genome size for macs2 callpeak; default is hs (homo sapiens)
   --opt OPT             [Step 5] (*optional) other parameters for macs2 callpeak
   --blacklist BLACKLIST
-                        [Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed
+                        [Step 5] (*optional) blacklist file; default is human hg38-blacklist.v2.bed
   --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
 ```
 
 ```
-$ python dnd_pt1.py -d <path_to_bam_directory> -o <path_to_output_directory> --thread 12 
+$ dnd-pt1 -d <path_to_bam_directory> -o <path_to_output_directory> --fasta <genome_fasta_file> --gnomad <germline_vcf_file> 
 ```
 
 Expected outputs are step1-5 directories in <-o>
 ```
 ├── step1_preprocess
-│   ├── ca46_ctcf
-│   │   ├── ca46.5perc.bam
-│   │   ├── ca46.5perc.bam.bai
-│   │   └── step1_picard_deduplication.txt
-│   └── k562_gata1
-│       ├── k562.10perc.bam
-│       ├── k562.10perc.bam.bai
-│       └── step1_picard_deduplication.txt
-├── step2_mpileup
-│   ├── ca46_ctcf
-│   │   └── ca46.5perc.pileup
-│   └── k562_gata1
-│       └── k562.10perc.pileup
+│   └── k562_ctcf_chr1
+│       ├── k562_ctcf_chr1.bam
+│       ├── k562_ctcf_chr1.bai
+│       └── step1_picard_deduplication.txt
 ├── step3_fltvcf
-│   ├── ca46_ctcf
-│   │   └── ca46.5perc.flt.vcf
-│   └── k562_gata1
-│       └── k562.10perc.flt.vcf
+│   └── k562_ctcf_chr1
+│       └── k562_ctcf_chr1.flt.vcf
 ├── step4_snvs
-│   ├── ca46_ctcf
-│   │   ├── ca46.5perc.flt.CT_GA.SNVs.vcf
-│   │   ├── ca46.5perc.flt.SNVs.vcf
-│   │   ├── ca46.5perc.snvs.bam
-│   │   └── ca46.5perc.snvs.bam.bai
-│   └── k562_gata1
-│       ├── k562.10perc.flt.CT_GA.SNVs.vcf
-│       ├── k562.10perc.flt.SNVs.vcf
-│       ├── k562.10perc.snvs.bam
-│       └── k562.10perc.snvs.bam.bai
+│   └── k562_ctcf_chr1
+│       ├── k562_ctcf_chr1.flt.CT_GA.SNVs.vcf
+│       ├── k562_ctcf_chr1.flt.SNVs.vcf
+│       ├── k562_ctcf_chr1.snvs.bam
+│       ├── k562_ctcf_chr1.snvs.bam.bai
+│       └── qnames.txt
 └── step5_peaks
-    ├── ca46_ctcf
-    │   ├── peaks_bkflt.narrowPeak
-    │   └── summits_bkflt.bed
-    └── k562_gata1
+    └── k562_ctcf_chr1
         ├── peaks_bkflt.narrowPeak
         └── summits_bkflt.bed
-
 ```
 
 
@@ -179,45 +164,39 @@ We found that having a common set of peaks in different samples is often conveni
 
 
 ```
-$ python dnd_pt2.py -h
+$ dnd-pt2 -h
+$ dnd-pt2 -h
+usage: [-h] -d DIR [-o OUTPUT] [--pass-peakcall] [--sample SAMPLE] --mode [{sea,homer2}] --fasta FASTA [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--homer-ref HM2REF]
 
-usage:  [-h] -d DIR [-o OUTPUT] [--pass-peakcall] [--sample SAMPLE] --mode [{sea,homer2}] [--gsize GSIZE] [--opt OPT] [--blacklist BLACKLIST] [--pass-bklist] [--motif MOTIF] [--fasta FASTA]
-        [--homer-ref HM2REF]
-
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
                         [Global] (*optional) output directory path
   --pass-peakcall       [Global] (*optional) pass peak calling and perform motif analysis ONLY; default is DO NOT PASS
-  --sample SAMPLE       [Global] (*optional if <--pass-peakcall>) motif analysis for which sample: "joint" or specify sample name; default is "joint"
+  --sample SAMPLE       [Global, --pass-peakcall] (*optional) motif analysis for which sample: "joint" or specify sample name; default is "joint"
   --mode [{sea,homer2}]
                         [Global] which mode: "sea", "homer2"; default is "sea"
+  --fasta FASTA         [Global, --mode:sea] genome fasta (indexed) used in alignment
   --gsize GSIZE         [Step 5] (*optional) effective genome size for macs2 callpeak; default is hs
   --opt OPT             [Step 5] (*optional) other parameters for macs2 callpeak
   --blacklist BLACKLIST
-                        [Step 5] (*optional) blacklist file; default is hg38-blacklist.v2.bed
+                        [Step 5] (*optional) blacklist file; default is human hg38-blacklist.v2.bed
   --pass-bklist         [Step 5] (*optional) do not run blacklist filtering
-  --motif MOTIF         [Step 5, --mode:sea] (*optional) motif reference; default is <HOCOMOCOv11_core_HUMAN_mono_meme_format.meme>
-  --fasta FASTA         [Step 5, --mode:sea] (*optional) genome fasta (indexed) used in alignment; e.g. cellranger/fasta/genome.fa
+  --motif MOTIF         [Step 5, --mode:sea] (*optional) motif reference; default is hocomoco v11 core human from the meme package
   --homer-ref HM2REF    [Step 5, --mode:homer2] (*optional) homer2 reference; default is "grch38_crgatac"
+
 ```
 
 ```
-$ python dnd_pt2.py -d <path_to_pt1_output_directory> --mode sea
+$ dnd-pt2 -d <path_to_pt1_output_directory> --fasta <genome_fasta_file> --mode sea
 ```
 
 This step will create a "merged" directory with joint peak calling results in "step5_peaks/", and intersected peaks in each sample's directory. Original MACS2 result files will be stored in "celltype_specific" directory in each sample.
 
 ```
 └── step5_peaks
-    ├── ca46_ctcf
-    │   ├── celltype_specific
-    │   │   ├── peaks_bkflt.narrowPeak
-    │   │   └── summits_bkflt.bed
-    │   ├── peaks_bkflt.narrowPeak
-    │   └── summits_bkflt.bed
-    ├── k562_gata1
+    └── k562_ctcf_chr1
     │   ├── celltype_specific
     │   │   ├── peaks_bkflt.narrowPeak
     │   │   └── summits_bkflt.bed
@@ -241,12 +220,11 @@ This step will create a "merged" directory with joint peak calling results in "s
 **Part 3: Motif annotation and D&D edit evaluation**
 
 ```
-$ python dnd_pt3.py -h
+$ dnd-pt3 -h
+usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] [--rand RAND] --sample SAMPLE [--var VARIANTS] [--genomeOrder GENOMEORDER] --mode [{chip,homer2,sea}] [--indiv-sea] [--chipseq CHIPSEQ] [--homer-ref HM2REF]
+                                          [--motif MOTIF [MOTIF ...]]
 
-usage: --mode only supports homer2 or sea [-h] -d DIR [-o OUTPUT] [--size SIZE] [--rand RAND] --sample SAMPLE [--var VARIANTS] --mode [{chip,homer2,sea}] [--indiv-sea] [--chipseq CHIPSEQ]
-                                          [--homer-ref HM2REF] [--motif MOTIF [MOTIF ...]]
-
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -d DIR, --Dir DIR     directory path
   -o OUTPUT, --Output OUTPUT
@@ -255,6 +233,8 @@ options:
   --rand RAND           [Global] (*optional) down-sample peaks to this number; default is 200
   --sample SAMPLE       [Global] specify <sample name> or <"all"> for all samples in <step5>
   --var VARIANTS        [Global] (*optional) expected D&D variants; default is "C>T,G>A"
+  --genomeOrder GENOMEORDER
+                        [Global] (*optional) chromosome ordered in bed; default is </data/GRCh38.p14.genome.chrs.bed>
   --mode [{chip,homer2,sea}]
                         [Global] which mode: "sea", "homer2" or "chip"
   --indiv-sea           [Global] (*optional, if --mode sea) specify when you analyzed SEA motif search for each sample separately
@@ -265,17 +245,16 @@ options:
 ```
 
 ```
-$ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample ca46_ctcf --mode sea --motif CTCF_HUMAN.H11MO.0.A
-$ python dnd_pt3.py -d <path_to_pt1_output_directory> --sample k562_gata1 --mode sea --motif GATA1_HUMAN.H11MO.0.A
+$ dnd-pt3 -d <path_to_pt1_output_directory> --sample k562_ctcf_chr1 --mode sea --motif CTCF_HUMAN.H11MO.0.A
 ```
 
-This will generate "step6_tfpeaks_sea" directory with includes "sample" (in this example, k562_gata1).
+This will generate "step6_tfpeaks_sea" directory with includes "sample" (in this example, k562_ctcf_chr1).
 
 Each "sample" directory has peaks, D&D edits, and footprint plots for TF binding peaks and background peaks. Users can define window size to collect D&D edits or the number of peaks to sample in footprinting plotting.
 
 ```
-step6_tfpeaks_sea/
-└── k562_gata1
+step6_tfpeaks_sea
+└── dndseq_ctcf_chr1
     ├── background.countNormalized.txt
     ├── background.countPerPeak.txt
     ├── context_di
@@ -296,6 +275,7 @@ step6_tfpeaks_sea/
     ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp.bed
     ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp.fasta
     ├── motif_bkgd.narrowPeak.width200.vcf.GA_+-5bp_revComp.fasta
+    ├── motif_bkgd.unflt.narrowPeak
     ├── motifCenteredCounts
     ├── motifCenteredCounts_nonDnD
     ├── motif_TF.narrowPeak
@@ -316,24 +296,29 @@ step6_tfpeaks_sea/
     ├── motif_TF.narrowPeak.width200.CT_GA.vcf
     ├── motif_TF.narrowPeak.width200.nonDnD.vcf
     ├── motif_TF.narrowPeak.width200.vcf
+    ├── motif_TF.unflt.narrowPeak
     ├── resizedPeakCounts
     ├── resizedPeakCounts_nonDnD
     ├── target.countNormalized.txt
     └── target.countPerPeak.txt
+
 ```
 
 
 **Part 4: Load D&D edits**
 
 ```
-$ python dnd_to_mtx.py -h
-usage: [-h] -v VCF [--ref REF] [--alt ALT] -p PEAK -b BAM [--flt-bam] -o OUTPUT
+$ dnd-pt4 -h
+usage: [-h] -v VCF [--bulk] [--ref REF] [--alt ALT] [--left LEFT] [--right RIGHT] -p PEAK -b BAM [--flt-bam] -o OUTPUT
 
 optional arguments:
   -h, --help            show this help message and exit
   -v VCF, --Vcf VCF     input vcf file
+  --bulk                (*optional) specify if the sample is bulk sample; default is NO
   --ref REF             (*optional) reference allele, rev.comp. is automatically considered; default is C
   --alt ALT             (*optional) altered allele, rev.comp. is automatically considered; default is T
+  --left LEFT           (*optional) ignore variants in this many bases on the left side of reads; default is 0
+  --right RIGHT         (*optional) ignore variants in this many bases on the right side of reads; default is 0
   -p PEAK, --Peak PEAK  input peak file
   -b BAM, --Bam BAM     input bam file
   --flt-bam             (*optional) filter <-b/--Bam> using variants; default is NOT FILTERING
@@ -342,11 +327,10 @@ optional arguments:
 ```
 
 ```
-$ python dnd_to_mtx.py -v <D&D edit in vcf> -p <peaks with motif in bed> -b <bam file> -o <output path>
+$ dnd-pt4 -v <D&D edit in vcf> -p <peaks with motif in bed> -b <bam file> -o <output path>
 ```
 
 ```
-$ tree test_edits/
 test_edits/
 ├── dndedits.fragments.editCount.txt
 ├── dndedits.fragments.txt
