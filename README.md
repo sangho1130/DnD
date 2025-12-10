@@ -61,6 +61,7 @@ which dnd-pt1
 # then run,
 sbatch cmd_dnd.sh 
 ```
+Test data can be downloaded from https://doi.org/10.6084/m9.figshare.30853628
 
 HOMER2 can be downloaded from https://homer-fnirs.org
 
