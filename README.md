@@ -20,6 +20,7 @@ cd DnD/main/
 conda env create -f environment.yml
 conda activate dndseq
 
+# install rtracklayer, ggplot2, reshape2
 Rscript install_packages.R 
 
 # install dndseq pipeline
