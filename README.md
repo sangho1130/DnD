@@ -33,19 +33,13 @@ which dnd-pt1
 # then run,
 sbatch cmd_dnd.sh 
 ```
-Test mini data can be downloaded from: 
+Test mini data can be downloaded from: https://doi.org/10.6084/m9.figshare.30853628
 
-https://doi.org/10.6084/m9.figshare.30853628
-
-gnomAD germline database (hg38) is required from:
-
-https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/ 
+gnomAD germline database (hg38) is required from: https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/ 
     
 (filtered version used in the paper is available at https://doi.org/10.6084/m9.figshare.27956862)
 
-Motif database for MEME can be downloaded from:
-
-https://meme-suite.org/meme/doc/download.html
+Motif database for MEME can be downloaded from: https://meme-suite.org/meme/doc/download.html
 
 
 ## Computational pipeline for D&D analysis
