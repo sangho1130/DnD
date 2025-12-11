@@ -1,4 +1,4 @@
-# **D&Dseq: Docking and Deamination followed by sequencing** 
+# **D&D-seq: Docking and Deamination followed by sequencing** 
 
 Our preprint is now available! 
 https://doi.org/10.1101/2024.12.31.630903
