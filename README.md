@@ -41,6 +41,8 @@ D&D pipeline was tested on Python 3.9.19 and R 4.3.3 using mamba (https://mamba.
 
 rtrackpayer (Bioconductor, https://doi.org/doi:10.18129/B9.bioc.rtracklayer), ggplot2, and reshape2 are required.
 
+gnomAD germline database (hg38) is required from https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/ (filtered version used in the paper is available at https://doi.org/10.6084/m9.figshare.27956862)
+
 Dependencies and requirements are specified in [main/environment.yml](main/environment.yml).
 
 
@@ -67,12 +69,6 @@ Test mini data can be downloaded from https://doi.org/10.6084/m9.figshare.308536
 
 Motif database for MEME can be downloaded from https://meme-suite.org/meme/doc/download.html
 
-| **database** | **note** |
-| -------- | ------- |
-| ENCODE blacklist   | https://doi.org/10.1038/s41598-019-45839-z   |
-| HOCOMOCO motif DB | included in MEME package https://meme-suite.org/meme/doc/download.html   |
-| gnomAD germline DB | https://console.cloud.google.com/storage/browser/gatk-best-practices/somatic-hg38/    |
-|                    | filtered version used in the paper is available at https://doi.org/10.6084/m9.figshare.27956862 |
 
 **important note**
 Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated into user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/). For bulk samples, D&D-seq takes genome aligned bam files as input. We noticed that recent picards version requires read group information in bam files and missing it leads to failure of the pipeline. In that case, users can manually add custom read group using the following samtools command.
