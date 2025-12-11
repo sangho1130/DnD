@@ -55,6 +55,8 @@ cd DnD/main/
 conda env create -f environment.yml
 conda activate dndseq
 
+Rscript install_packages.R 
+
 # install dndseq pipeline
 pip install -e .
 which dnd-pt1
