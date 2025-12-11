@@ -64,6 +64,7 @@ which dnd-pt1
 sbatch cmd_dnd.sh 
 ```
 Test mini data can be downloaded from https://doi.org/10.6084/m9.figshare.30853628
+
 Motif database for MEME can be downloaded from https://meme-suite.org/meme/doc/download.html
 
 | **database** | **note** |
