@@ -7,7 +7,7 @@ https://doi.org/10.1101/2024.12.31.630903
 
 ### Prerequisite for D&D analysis
 
-Following tools are required to run D&D analysis. For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals. 
+For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals. 
 
 D&D pipeline was tested on Python 3.9.19 and R 4.3.3 using mamba (https://mamba.readthedocs.io/en/latest/). Dependencies and requirements are specified in [main/environment.yml](main/environment.yml).
 
