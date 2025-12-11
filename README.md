@@ -35,7 +35,7 @@ Footprint analysis for D&D edits was performed by counting the number of D&D edi
 
 ### Prerequisite for D&D analysis
 
-Following tools are required to run D&D analysis (more efficient version is coming). For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals. 
+Following tools are required to run D&D analysis. For most users, we recommend to install conda or mamba virtual environment to install these programs. For package installation and management, please advise with conda/mamba manuals. 
 
 D&D pipeline was tested on Python 3.9.19 and R 4.3.3 using mamba (https://mamba.readthedocs.io/en/latest/). 
 
@@ -43,6 +43,8 @@ rtrackpayer (Bioconductor, https://doi.org/doi:10.18129/B9.bioc.rtracklayer), gg
 
 Dependencies and requirements are specified in [main/environment.yml](main/environment.yml).
 
+
+### Installation
 ```
 git clone https://github.com/sangho1130/DnD.git
 cd DnD/main/
@@ -61,11 +63,8 @@ which dnd-pt1
 # then run,
 sbatch cmd_dnd.sh 
 ```
-Test data can be downloaded from https://doi.org/10.6084/m9.figshare.30853628
-
-HOMER2 can be downloaded from https://homer-fnirs.org
-
-MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
+Test mini data can be downloaded from https://doi.org/10.6084/m9.figshare.30853628
+Motif database for MEME can be downloaded from https://meme-suite.org/meme/doc/download.html
 
 | **database** | **note** |
 | -------- | ------- |
@@ -75,8 +74,13 @@ MEME Suite can be downloaded from https://meme-suite.org/meme/doc/download.html
 |                    | filtered version used in the paper is available at https://doi.org/10.6084/m9.figshare.27956862 |
 
 **important note**
-Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated by user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/).
+Bam files for samples, cell cluster or subclusters should be prepared in the following manner. For single-cell data, bam files can be separated into user-provided clusters using sinto. Please refer to the sinto's manual (https://timoast.github.io/sinto/). For bulk samples, D&D-seq takes genome aligned bam files as input. We noticed that recent picards version requires read group information in bam files and missing it leads to failure of the pipeline. In that case, users can manually add custom read group using the following samtools command.
 
+```
+samtools addreplacerg -r "@RG\tID:dndseq\tSM:dndseq\tLB:MissingLibrary.1\tPU:dndseq\tPL:ILLUMINA" -o <output.bam> <input.bam>
+```
+
+Bam files should be structured like below.
 ```
 $ tree bams
 
@@ -85,16 +89,16 @@ bams
 ├── dndseq_ctcf_chr1
 │   ├── k562_ctcf_chr1.bam
 │   └── k562_ctcf_chr1.bam.bai
-└── (...)
-    ├── (...).bam
-    └── (...).bam.bai
+└── (..XYZ..)
+    ├── (..XYZ..).bam
+    └── (..XYZ..).bam.bai
 ```
 
 ## Running D&D analytic pipeline
 
-D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build or ChIP-seq as reference. 
+D&D signals are collected and evaluated with three-step python scripts. By default, D&D edits will be called with motif analysis using MEME Simple Enrichment Analysis (SEA). Users can instead run HOMER2 with their own build for de novo motif searching or use matching ChIP-seq tracks as reference. 
 
-**Part 1: preprocessing, collecting and filtering variants, and first round peak calling**
+**Part 1: preprocessing, pileup and filtering variants, and first round peak calling**
 
 ```
 $ dnd-pt1 --help
