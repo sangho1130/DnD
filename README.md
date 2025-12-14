@@ -380,5 +380,5 @@ head(dndObj@meta.data)
 
 
 
-Raw data is available at Gene Expression Omnibus ([GSEXXXXXX](https://www.landaulab.org))
+Raw data is available at Gene Expression Omnibus ([GSE296495](https://www.landaulab.org))
 
